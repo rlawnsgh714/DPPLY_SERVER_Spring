@@ -9,6 +9,7 @@ import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
 import com.stuent.dpply.common.config.properties.AppProperties;
 import com.stuent.dpply.common.config.restemplate.RestTemplateConfig;
+import com.stuent.dpply.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,12 @@ public class AuthServiceImpl implements AuthService{
                 .build());
 //        Auth savedAuth = authRepository.save(auth);
         return new LoginRo(auth, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
+    }
+
+    @Override
+    public Auth getAuthById(String id) {
+        return authRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 유저는 존재하지 않습니다"));
     }
 
     private DauthServerDto getDauthToken(String code) {

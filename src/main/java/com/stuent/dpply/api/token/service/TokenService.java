@@ -8,4 +8,6 @@ public interface TokenService {
     String generateToken(String id, JWT jwt);
 
     Auth verifyToken(String token);
+
+    String RemakeRefreshToken(String refreshToken);
 }
