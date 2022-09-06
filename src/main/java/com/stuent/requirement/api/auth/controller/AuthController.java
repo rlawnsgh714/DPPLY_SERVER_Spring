@@ -20,7 +20,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping
+    @PostMapping("login")
     public ResponseData<LoginRo> login(
             @RequestBody @Valid DodamLoginDto dto
     ) {
