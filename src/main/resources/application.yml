@@ -1,0 +1,22 @@
+server:
+    port: 8080
+
+spring:
+
+    jpa:
+        show-sql: false
+        database: mysql
+        hibernate:
+            ddl-auto: update
+
+    datasource:
+        jdbc-url: jdbc:mysql://localhost:3306/requirement?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+        username: root
+        password: 123456789
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+app:
+    DAUTH_SERVER: http://101.101.209.184:8003
+    OPEN_SERVER: http://101.101.209.184:8004
+    CLIENT_ID: 266c66937d2e412cbf18fcae14de7ef4387a8d093ae54f2b9c808ad53a1b54dd
+    CLIENT_SECRET: 0d9006b4da614a3d9b6cb05916bd0991c0232015df5b48f5a27344a5ea7e4ad4
