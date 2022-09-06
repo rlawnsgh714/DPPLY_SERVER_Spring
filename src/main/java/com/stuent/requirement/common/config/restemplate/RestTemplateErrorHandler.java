@@ -1,6 +1,6 @@
 package com.stuent.requirement.common.config.restemplate;
 
-import com.b1nd.dodamdodam.common.exception.InternalServerException;
+import com.stuent.requirement.common.exception.InternalServerException;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;

@@ -1,22 +1,21 @@
 package com.stuent.requirement.api.auth.domain.ro;
 
+import com.stuent.requirement.api.auth.domain.entity.Auth;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.lang.reflect.Member;
 
 @Getter
 @Setter
 public class LoginRo {
 
-    private Member member; //TODO 실제 유저로 바꾸기
+    private Auth auth;
     private String token;
     private String refreshToken;
 
     @Builder
-    public LoginRo(Member member, String token, String refreshToken) {
-        this.member = member;
+    public LoginRo(Auth auth, String token, String refreshToken) {
+        this.auth = auth;
         this.token = token;
         this.refreshToken = refreshToken;
     }
