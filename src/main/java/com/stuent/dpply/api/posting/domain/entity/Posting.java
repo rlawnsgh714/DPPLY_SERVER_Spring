@@ -1,6 +1,7 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,4 +26,8 @@ public class Posting {
     @OneToMany(mappedBy = "posting")
     @JsonBackReference
     private List<PostingSympathy> sympathyList;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PostingStatus status;
 }
