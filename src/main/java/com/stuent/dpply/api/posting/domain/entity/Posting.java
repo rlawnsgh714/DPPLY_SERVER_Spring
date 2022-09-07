@@ -1,9 +1,12 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity(name = "posting")
@@ -18,4 +21,8 @@ public class Posting {
 
     @Column(nullable = false)
     private int sympathyCount;
+
+    @OneToMany(mappedBy = "posting")
+    @JsonBackReference
+    private List<PostingSympathy> sympathyList;
 }

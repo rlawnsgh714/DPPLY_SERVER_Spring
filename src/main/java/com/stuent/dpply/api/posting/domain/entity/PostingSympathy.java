@@ -1,5 +1,6 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,15 +8,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Getter
-@Entity(name = "posting_sympathy_user")
+@Entity(name = "posting_sympathy")
 @NoArgsConstructor
 public class PostingSympathy {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_posting_id")
+    @JsonManagedReference
     private Posting posting;
 
     @OneToOne(fetch = FetchType.EAGER)
