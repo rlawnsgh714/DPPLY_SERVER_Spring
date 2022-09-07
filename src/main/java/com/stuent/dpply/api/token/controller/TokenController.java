@@ -24,7 +24,7 @@ public class TokenController {
     public ResponseData<String> remakeAccessToken(
             @RequestBody @Valid RemakeRefreshTokenDto dto
     ) {
-        String token = tokenService.remakeRefreshToken(dto);
+        String token = tokenService.remakeAccessToken(dto);
         return new ResponseData<>(
                 HttpStatus.OK,
                 "토큰 재발급 성공",
