@@ -4,7 +4,7 @@ import com.stuent.dpply.api.auth.domain.dto.DauthRequestDto;
 import com.stuent.dpply.api.auth.domain.dto.DauthServerDto;
 import com.stuent.dpply.api.auth.domain.dto.DodamLoginDto;
 import com.stuent.dpply.api.auth.domain.dto.DodamOpenApiDto;
-import com.stuent.dpply.api.auth.domain.entity.Auth;
+import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
 import com.stuent.dpply.common.config.properties.AppProperties;
@@ -15,6 +15,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +30,7 @@ public class AuthServiceImpl implements AuthService{
     public LoginRo dodamLogin(DodamLoginDto dto) {
         DauthServerDto dauthToken = getDauthToken(dto.getCode());
         DodamOpenApiDto.DodamInfoData info = getDodamInfo(dauthToken.getAccess_token()).getData();
-        Auth auth = authRepository.findById(info.getUniqueId()).orElseGet(() -> Auth.builder()
+        User auth = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
                 .uniqueId(info.getUniqueId())
                 .grade(info.getGrade())
                 .room(info.getRoom())
@@ -42,7 +44,12 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public Auth getAuthById(String id) {
+    public List<User> getUsers() {
+        return null;
+    }
+
+    @Override
+    public User getUserById(String id) {
         return authRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 유저는 존재하지 않습니다"));
     }

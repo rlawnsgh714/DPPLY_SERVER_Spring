@@ -1,11 +1,15 @@
 package com.stuent.dpply.api.auth.service;
 
 import com.stuent.dpply.api.auth.domain.dto.DodamLoginDto;
-import com.stuent.dpply.api.auth.domain.entity.Auth;
+import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
+
+import java.util.List;
 
 public interface AuthService {
     LoginRo dodamLogin(DodamLoginDto dto);
 
-    Auth getAuthById(String id);
+    List<User> getUsers();
+
+    User getUserById(String id);
 }

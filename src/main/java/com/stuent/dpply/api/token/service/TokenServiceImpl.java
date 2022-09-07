@@ -1,6 +1,6 @@
 package com.stuent.dpply.api.token.service;
 
-import com.stuent.dpply.api.auth.domain.entity.Auth;
+import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.auth.service.AuthService;
 import com.stuent.dpply.api.token.domain.enums.JWT;
@@ -74,7 +74,7 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public Auth verifyToken(String token) {
+    public User verifyToken(String token) {
         return authRepository.findById(
                 parseToken(token, JWT.ACCESS).get("authId").toString())
                 .orElseThrow(() -> new NotFoundException("해당 아이디는 존재하지 않습니다"));
@@ -87,8 +87,8 @@ public class TokenServiceImpl implements TokenService{
         }
 
         Claims claims = this.parseToken(refreshToken, JWT.REFRESH);
-        Auth auth = authService.getAuthById(claims.get("userId").toString());
+        User user = authService.getAuthById(claims.get("userId").toString());
 
-        return generateToken(auth.getUniqueId(), JWT.ACCESS);
+        return generateToken(user.getUniqueId(), JWT.ACCESS);
     }
 }

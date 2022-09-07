@@ -1,6 +1,6 @@
 package com.stuent.dpply.common.interceptor;
 
-import com.stuent.dpply.api.auth.domain.entity.Auth;
+import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.token.service.TokenService;
 import com.stuent.dpply.common.extractor.AuthorizationExtractor;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
             throw new IllegalArgumentException("유효하지 않은 토큰");
         }
 
-        Auth auth = tokenService.verifyToken(token);
+        User auth = tokenService.verifyToken(token);
         request.setAttribute("authId", auth);
         return true;
     }

@@ -14,7 +14,7 @@ import javax.persistence.Id;
 @Entity(name = "auth")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Auth {
+public class User {
     @Id
     private String uniqueId;
 

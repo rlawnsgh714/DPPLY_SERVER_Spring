@@ -1,6 +1,6 @@
 package com.stuent.dpply.api.auth.domain.ro;
 
-import com.stuent.dpply.api.auth.domain.entity.Auth;
+import com.stuent.dpply.api.auth.domain.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 public class LoginRo {
 
-    private Auth auth;
+    private User auth;
     private String token;
     private String refreshToken;
 
     @Builder
-    public LoginRo(Auth auth, String token, String refreshToken) {
+    public LoginRo(User auth, String token, String refreshToken) {
         this.auth = auth;
         this.token = token;
         this.refreshToken = refreshToken;
