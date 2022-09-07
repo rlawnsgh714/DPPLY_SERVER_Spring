@@ -1,6 +1,7 @@
 package com.stuent.dpply.api.token.service;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
+import com.stuent.dpply.api.token.domain.dto.RemakeRefreshTokenDto;
 import com.stuent.dpply.api.token.domain.enums.JWT;
 
 public interface TokenService {
@@ -9,5 +10,5 @@ public interface TokenService {
 
     User verifyToken(String token);
 
-    String RemakeRefreshToken(String refreshToken);
+    String remakeAccessToken(RemakeRefreshTokenDto refreshToken);
 }

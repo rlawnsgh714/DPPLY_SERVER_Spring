@@ -3,6 +3,7 @@ package com.stuent.dpply.api.token.service;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.auth.service.AuthService;
+import com.stuent.dpply.api.token.domain.dto.RemakeRefreshTokenDto;
 import com.stuent.dpply.api.token.domain.enums.JWT;
 import com.stuent.dpply.common.config.properties.AppProperties;
 import com.stuent.dpply.common.exception.BadRequestException;
@@ -81,12 +82,12 @@ public class TokenServiceImpl implements TokenService{
     }
 
     @Override
-    public String RemakeRefreshToken(String refreshToken) {
-        if (refreshToken == null || refreshToken.trim().isEmpty()) {
+    public String remakeAccessToken(RemakeRefreshTokenDto refreshToken) {
+        if (refreshToken == null || refreshToken.getRefreshToken().trim().isEmpty()) {
             throw new BadRequestException("토큰이 전송되지 않았습니다");
         }
 
-        Claims claims = this.parseToken(refreshToken, JWT.REFRESH);
+        Claims claims = this.parseToken(refreshToken.getRefreshToken(), JWT.REFRESH);
         User user = authService.getUserById(claims.get("userId").toString());
 
         return generateToken(user.getUniqueId(), JWT.ACCESS);
