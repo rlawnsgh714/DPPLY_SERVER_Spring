@@ -52,4 +52,17 @@ public class AuthController {
                 myInfo
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseData<User> getUserById(
+            @PathVariable String id,
+            @RequestAttribute User user
+    ) {
+        User userInfo = authService.getUserById(id);
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "내 유저 정보 조회 성공",
+                userInfo
+        );
+    }
 }

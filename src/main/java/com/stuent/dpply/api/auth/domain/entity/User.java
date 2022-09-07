@@ -1,13 +1,12 @@
 package com.stuent.dpply.api.auth.domain.entity;
 
+import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Builder
@@ -34,4 +33,8 @@ public class User {
     private String email;
 
     private String profileImage;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
 }

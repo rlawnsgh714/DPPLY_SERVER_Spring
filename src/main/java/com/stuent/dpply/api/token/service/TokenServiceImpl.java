@@ -87,7 +87,7 @@ public class TokenServiceImpl implements TokenService{
         }
 
         Claims claims = this.parseToken(refreshToken, JWT.REFRESH);
-        User user = authService.getAuthById(claims.get("userId").toString());
+        User user = authService.getUserById(claims.get("userId").toString());
 
         return generateToken(user.getUniqueId(), JWT.ACCESS);
     }
