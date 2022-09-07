@@ -32,7 +32,7 @@ public class AuthServiceImpl implements AuthService{
     public LoginRo dodamLogin(DodamLoginDto dto) {
         DauthServerDto dauthToken = getDauthToken(dto.getCode());
         DodamOpenApiDto.DodamInfoData info = getDodamInfo(dauthToken.getAccess_token()).getData();
-        User auth = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
+        User user = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
                 .uniqueId(info.getUniqueId())
                 .grade(info.getGrade())
                 .room(info.getRoom())
@@ -41,13 +41,13 @@ public class AuthServiceImpl implements AuthService{
                 .email(info.getEmail())
                 .profileImage(info.getProfileImage())
                 .build());
-//        Auth savedAuth = authRepository.save(auth);
-        return new LoginRo(auth, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
+        User savedUser = authRepository.save(user);
+        return new LoginRo(user, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
     }
 
     @Override
     public List<User> getUsers() {
-        return null;
+        return authRepository.findAll();
     }
 
     @Override

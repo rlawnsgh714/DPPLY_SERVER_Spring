@@ -33,6 +33,7 @@ public class AuthController {
         );
     }
 
+    @CheckAuthorization
     @GetMapping
     public ResponseData<List<User>> getUsers() {
         List<User> userList = authService.getUsers();
