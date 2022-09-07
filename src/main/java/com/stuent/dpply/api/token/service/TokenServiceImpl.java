@@ -61,8 +61,7 @@ public class TokenServiceImpl implements TokenService{
             return Jwts.parser()
                     .setSigningKey(
                             jwt == JWT.ACCESS ?
-                                    appProperties.getACCESS_SECRET() : appProperties.getREFRESH_SECRET()
-                    )
+                                    appProperties.getACCESS_SECRET() : appProperties.getREFRESH_SECRET())
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
