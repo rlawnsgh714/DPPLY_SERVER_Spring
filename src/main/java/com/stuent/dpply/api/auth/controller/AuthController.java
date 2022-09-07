@@ -40,4 +40,16 @@ public class AuthController {
                 userList
         );
     }
+
+    @GetMapping("/my")
+    public ResponseData<User> getMyInfo(
+            @RequestAttribute User user
+    ){
+        User myInfo = authService.getUserById(user.getUniqueId());
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "내 유저 정보 조회 성공",
+                myInfo
+        );
+    }
 }
