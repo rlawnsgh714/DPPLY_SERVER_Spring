@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService{
                 .profileImage(info.getProfileImage())
                 .build());
         User savedUser = authRepository.save(user);
-        return new LoginRo(user, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
+        return new LoginRo(savedUser, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
     }
 
     @Override
