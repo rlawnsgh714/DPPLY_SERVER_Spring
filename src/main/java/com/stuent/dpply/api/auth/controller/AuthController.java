@@ -2,8 +2,10 @@ package com.stuent.dpply.api.auth.controller;
 
 import com.stuent.dpply.api.auth.domain.dto.DodamLoginDto;
 import com.stuent.dpply.api.auth.domain.entity.User;
+import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
 import com.stuent.dpply.api.auth.service.AuthService;
+import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.response.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -53,10 +55,10 @@ public class AuthController {
         );
     }
 
+    @CheckAuthorization(roles = UserRole.ADMIN)
     @GetMapping("/{id}")
     public ResponseData<User> getUserById(
-            @PathVariable String id,
-            @RequestAttribute User user
+            @PathVariable String id
     ) {
         User userInfo = authService.getUserById(id);
         return new ResponseData<>(

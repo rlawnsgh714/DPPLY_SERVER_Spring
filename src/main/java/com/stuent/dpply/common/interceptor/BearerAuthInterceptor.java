@@ -2,9 +2,11 @@ package com.stuent.dpply.common.interceptor;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.token.service.TokenService;
+import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.extractor.AuthorizationExtractor;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,17 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) {
+        if(!(handler instanceof HandlerMethod)) {
+            return true;
+        }
+
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        CheckAuthorization checkAuthorization = handlerMethod.getMethodAnnotation(CheckAuthorization.class);
+
+        if (checkAuthorization == null) {
+            return true;
+        }
+
         String token = authExtractor.extract(request, "Bearer");
         if (token == null || token.length() == 0) {
             return true;
