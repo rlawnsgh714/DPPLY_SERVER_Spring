@@ -27,4 +27,14 @@ public class PostingController {
                 postingList
         );
     }
+
+    @GetMapping("/solved")
+    public ResponseData<List<Posting>> getSolvedPost() {
+        List<Posting> postingList = postingService.getSolvedPost();
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "대기중인 게시물 조회 성공",
+                postingList
+        );
+    }
 }

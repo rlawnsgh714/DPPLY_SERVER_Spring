@@ -7,4 +7,6 @@ import java.util.List;
 public interface PostingService {
 
     List<Posting> getWaitingPost();
+
+    List<Posting> getSolvedPost();
 }

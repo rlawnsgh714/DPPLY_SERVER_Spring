@@ -18,4 +18,9 @@ public class PostingServiceImpl implements PostingService{
     public List<Posting> getWaitingPost() {
         return postingRepository.findByStatus(PostingStatus.WAITING);
     }
+
+    @Override
+    public List<Posting> getSolvedPost() {
+        return postingRepository.findByStatus(PostingStatus.SOLVED);
+    }
 }
