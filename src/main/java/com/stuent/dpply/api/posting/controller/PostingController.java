@@ -64,4 +64,16 @@ public class PostingController {
                 "게시물 작성 성공"
         );
     }
+
+    @DeleteMapping("/{id}")
+    public Response deletePost(
+            @RequestAttribute User user,
+            @PathVariable int id
+    ) {
+        postingService.deletePost(user, id);
+        return new Response(
+                HttpStatus.OK,
+                "게시물 삭제 성공"
+        );
+    }
 }

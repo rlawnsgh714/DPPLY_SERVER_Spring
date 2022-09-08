@@ -16,4 +16,6 @@ public interface PostingService {
     void createPost(User user, CreatePostDto dto);
 
     void modifyPost(User user, ModifyPostDto dto);
+
+    void deletePost(User user, int id);
 }

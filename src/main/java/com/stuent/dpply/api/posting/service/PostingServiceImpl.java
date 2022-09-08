@@ -1,6 +1,7 @@
 package com.stuent.dpply.api.posting.service;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
+import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
@@ -44,9 +45,19 @@ public class PostingServiceImpl implements PostingService{
         Posting posting = postingRepository.findById(dto.getPostingId())
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         if(!(posting.getUser().equals(user))) {
-            throw new ForbiddenException("다른 사람의 게시물은 수정할 수 없습니다");
+            throw new UnauthorizedException("다른 사람의 게시물은 수정할 수 없습니다");
         }
         posting.updatePosting(dto.getText());
         postingRepository.save(posting);
+    }
+
+    @Override
+    public void deletePost(User user, int id) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        if(!(posting.getUser().equals(user)) && !(user.getRole().equals(UserRole.ADMIN))) {
+            throw new UnauthorizedException("다른 사람의 게시물은 삭제할 수 없습니다");
+        }
+        postingRepository.delete(posting);
     }
 }
