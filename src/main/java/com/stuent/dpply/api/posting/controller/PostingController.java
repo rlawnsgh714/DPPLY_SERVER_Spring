@@ -53,6 +53,7 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @PostMapping
     public Response createPost(
             @RequestAttribute User user,
@@ -65,6 +66,7 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @PatchMapping
     public Response modifyPost(
             @RequestAttribute User user,
@@ -77,6 +79,7 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @DeleteMapping("/{id}")
     public Response deletePost(
             @RequestAttribute User user,
