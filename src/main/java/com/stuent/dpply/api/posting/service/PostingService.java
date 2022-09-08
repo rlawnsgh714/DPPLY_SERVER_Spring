@@ -13,6 +13,8 @@ public interface PostingService {
 
     List<Posting> getSolvedPost();
 
+    List<Posting> getRefusedPost();
+
     void createPost(User user, CreatePostDto dto);
 
     void modifyPost(User user, ModifyPostDto dto);

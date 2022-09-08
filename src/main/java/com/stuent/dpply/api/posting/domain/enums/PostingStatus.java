@@ -1,5 +1,5 @@
 package com.stuent.dpply.api.posting.domain.enums;
 
 public enum PostingStatus {
-    SOLVED, WAITING, REFUSE
+    SOLVED, WAITING, REFUSED
 }

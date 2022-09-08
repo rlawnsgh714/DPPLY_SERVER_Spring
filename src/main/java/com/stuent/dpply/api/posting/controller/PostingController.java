@@ -43,6 +43,16 @@ public class PostingController {
         );
     }
 
+    @GetMapping("/refuse")
+    public ResponseData<List<Posting>> getRefusePost() {
+        List<Posting> postingList = postingService.getRefusedPost();
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "해결된 게시물 조회 성공",
+                postingList
+        );
+    }
+
     @PostMapping
     public Response createPost(
             @RequestAttribute User user,

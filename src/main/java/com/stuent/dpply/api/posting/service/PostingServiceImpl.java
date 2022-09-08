@@ -33,6 +33,11 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
+    public List<Posting> getRefusedPost() {
+        return postingRepository.findByStatus(PostingStatus.REFUSED);
+    }
+
+    @Override
     public void createPost(User user, CreatePostDto dto) {
         Posting posting = Posting.builder()
                 .text(dto.getText())
@@ -75,7 +80,7 @@ public class PostingServiceImpl implements PostingService{
     public void refusePost(int id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
-        posting.updateStatus(PostingStatus.REFUSE);
+        posting.updateStatus(PostingStatus.REFUSED);
         postingRepository.save(posting);
     }
 }
