@@ -2,6 +2,7 @@ package com.stuent.dpply.api.posting.controller;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
+import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.service.PostingService;
 import com.stuent.dpply.common.response.Response;
@@ -46,6 +47,18 @@ public class PostingController {
             @RequestBody @Valid CreatePostDto dto
     ) {
         postingService.createPost(user, dto);
+        return new Response(
+                HttpStatus.OK,
+                "게시물 작성 성공"
+        );
+    }
+
+    @PatchMapping
+    public Response modifyPost(
+            @RequestAttribute User user,
+            @RequestBody ModifyPostDto dto
+    ) {
+        postingService.modifyPost(user, dto);
         return new Response(
                 HttpStatus.OK,
                 "게시물 작성 성공"

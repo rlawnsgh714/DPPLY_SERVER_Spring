@@ -44,6 +44,10 @@ public class Posting {
     @JoinColumn(name = "fk_user_id")
     private User user;
 
+    public void updatePosting(String text){
+        this.text = text;
+    }
+
     @Builder
     public Posting(String text, User user){
         this.text = text;
