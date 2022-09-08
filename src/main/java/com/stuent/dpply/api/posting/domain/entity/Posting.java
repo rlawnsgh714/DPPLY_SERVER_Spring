@@ -1,12 +1,16 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -23,11 +27,29 @@ public class Posting {
     @Column(nullable = false)
     private int sympathyCount;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PostingStatus status;
+
     @OneToMany(mappedBy = "posting")
     @JsonBackReference
     private List<PostingSympathy> sympathyList;
 
-    @Enumerated(EnumType.STRING)
+    @CreatedDate
     @Column(nullable = false)
-    private PostingStatus status;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createAt;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fk_user_id")
+    private User user;
+
+    @Builder
+    public Posting(String text, User user){
+        this.text = text;
+        this.user = user;
+        this.sympathyCount = 0;
+        this.status = PostingStatus.WAITING;
+        this.createAt = LocalDate.now();
+    }
 }

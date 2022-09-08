@@ -1,5 +1,7 @@
 package com.stuent.dpply.api.posting.service;
 
+import com.stuent.dpply.api.auth.domain.entity.User;
+import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
@@ -22,5 +24,14 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public List<Posting> getSolvedPost() {
         return postingRepository.findByStatus(PostingStatus.SOLVED);
+    }
+
+    @Override
+    public void createPost(User user, CreatePostDto dto) {
+        Posting posting = Posting.builder()
+                .text(dto.getText())
+                .user(user)
+                .build();
+        postingRepository.save(posting);
     }
 }
