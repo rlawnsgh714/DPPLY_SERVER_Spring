@@ -19,5 +19,7 @@ public interface PostingService {
 
     void deletePost(User user, int id);
 
-    void soledPost(User user, int id);
+    void soledPost(int id);
+
+    void refusePost(int id);
 }

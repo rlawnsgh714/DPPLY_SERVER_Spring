@@ -82,13 +82,24 @@ public class PostingController {
     @CheckAuthorization(roles = UserRole.ADMIN)
     @PostMapping("/solve/{id}")
     public Response solvePost(
-            @RequestAttribute User user,
             @PathVariable int id
     ) {
-        postingService.soledPost(user, id);
+        postingService.soledPost(id);
         return new Response(
                 HttpStatus.OK,
                 "게시물 해결 처리 성공"
+        );
+    }
+
+    @CheckAuthorization(roles = UserRole.ADMIN)
+    @PostMapping("/refuse/{id}")
+    public Response refusePost(
+            @PathVariable int id
+    ) {
+        postingService.refusePost(id);
+        return new Response(
+                HttpStatus.OK,
+                "게시물 기각 처리 성공"
         );
     }
 }

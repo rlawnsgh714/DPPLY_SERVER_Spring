@@ -64,10 +64,18 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void soledPost(User user, int id) {
+    public void soledPost(int id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         posting.updateStatus(PostingStatus.SOLVED);
+        postingRepository.save(posting);
+    }
+
+    @Override
+    public void refusePost(int id) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        posting.updateStatus(PostingStatus.REFUSE);
         postingRepository.save(posting);
     }
 }
