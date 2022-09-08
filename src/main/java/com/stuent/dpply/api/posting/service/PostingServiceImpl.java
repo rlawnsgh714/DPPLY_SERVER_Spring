@@ -12,6 +12,7 @@ import com.stuent.dpply.common.exception.NotFoundException;
 import com.stuent.dpply.common.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
+    @Transactional
     public void deletePost(User user, int id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
@@ -59,5 +61,13 @@ public class PostingServiceImpl implements PostingService{
             throw new UnauthorizedException("다른 사람의 게시물은 삭제할 수 없습니다");
         }
         postingRepository.delete(posting);
+    }
+
+    @Override
+    public void soledPost(User user, int id) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        posting.updateStatus(PostingStatus.SOLVED);
+        postingRepository.save(posting);
     }
 }

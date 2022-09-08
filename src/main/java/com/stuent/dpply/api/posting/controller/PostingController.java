@@ -1,10 +1,12 @@
 package com.stuent.dpply.api.posting.controller;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
+import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.service.PostingService;
+import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.response.Response;
 import com.stuent.dpply.common.response.ResponseData;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +76,19 @@ public class PostingController {
         return new Response(
                 HttpStatus.OK,
                 "게시물 삭제 성공"
+        );
+    }
+
+    @CheckAuthorization(roles = UserRole.ADMIN)
+    @PostMapping("/solve/{id}")
+    public Response solvePost(
+            @RequestAttribute User user,
+            @PathVariable int id
+    ) {
+        postingService.soledPost(user, id);
+        return new Response(
+                HttpStatus.OK,
+                "게시물 해결 처리 성공"
         );
     }
 }

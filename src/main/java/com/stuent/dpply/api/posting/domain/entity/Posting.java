@@ -47,6 +47,9 @@ public class Posting {
     public void updatePosting(String text){
         this.text = text;
     }
+    public void updateStatus(PostingStatus status){
+        this.status = status;
+    }
 
     @Builder
     public Posting(String text, User user){

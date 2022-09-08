@@ -18,4 +18,6 @@ public interface PostingService {
     void modifyPost(User user, ModifyPostDto dto);
 
     void deletePost(User user, int id);
+
+    void soledPost(User user, int id);
 }
