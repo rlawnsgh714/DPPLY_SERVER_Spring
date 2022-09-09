@@ -24,4 +24,6 @@ public interface PostingService {
     void soledPost(int id);
 
     void refusePost(int id);
+
+    void createSympathy(User user, int id);
 }

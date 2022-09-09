@@ -5,8 +5,10 @@ import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
+import com.stuent.dpply.api.posting.domain.entity.PostingSympathy;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
+import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
 import com.stuent.dpply.common.exception.ForbiddenException;
 import com.stuent.dpply.common.exception.NotFoundException;
 import com.stuent.dpply.common.exception.UnauthorizedException;
@@ -21,6 +23,7 @@ import java.util.List;
 public class PostingServiceImpl implements PostingService{
 
     private final PostingRepository postingRepository;
+    private final PostingSympathyRepository postingSympathyRepository;
 
     @Override
     public List<Posting> getWaitingPost() {
@@ -82,5 +85,16 @@ public class PostingServiceImpl implements PostingService{
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         posting.updateStatus(PostingStatus.REFUSED);
         postingRepository.save(posting);
+    }
+
+    @Override
+    public void createSympathy(User user, int id) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        PostingSympathy postingSympathy = PostingSympathy.builder()
+                .posting(posting)
+                .user(user)
+                .build();
+        postingSympathyRepository.save(postingSympathy);
     }
 }

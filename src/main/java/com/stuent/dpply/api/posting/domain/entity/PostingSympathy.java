@@ -2,6 +2,7 @@ package com.stuent.dpply.api.posting.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.api.auth.domain.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,4 +24,10 @@ public class PostingSympathy {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_user_id")
     private User user;
+
+    @Builder
+    public PostingSympathy(Posting posting, User user){
+        this.posting = posting;
+        this.user = user;
+    }
 }

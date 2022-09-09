@@ -75,7 +75,7 @@ public class PostingController {
         postingService.modifyPost(user, dto);
         return new Response(
                 HttpStatus.OK,
-                "게시물 작성 성공"
+                "게시물 수정 성공"
         );
     }
 
@@ -113,6 +113,18 @@ public class PostingController {
         return new Response(
                 HttpStatus.OK,
                 "게시물 기각 처리 성공"
+        );
+    }
+
+    @PostMapping("/sympathy/{id}")
+    public Response createSympathy(
+            @RequestAttribute User user,
+            @PathVariable int id
+    ) {
+        postingService.createSympathy(user, id);
+        return new Response(
+                HttpStatus.OK,
+                "공감 표시 성공"
         );
     }
 }
