@@ -4,16 +4,14 @@ import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
+import com.stuent.dpply.api.posting.domain.enums.SortMethod;
+import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 
 import java.util.List;
 
 public interface PostingService {
 
-    List<Posting> getWaitingPost();
-
-    List<Posting> getSolvedPost();
-
-    List<Posting> getRefusedPost();
+    List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort);
 
     void createPost(User user, CreatePostDto dto);
 

@@ -5,6 +5,8 @@ import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
+import com.stuent.dpply.api.posting.domain.enums.SortMethod;
+import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.service.PostingService;
 import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.response.Response;
@@ -23,32 +25,15 @@ public class PostingController {
 
     private final PostingService postingService;
 
-    @GetMapping("/waiting")
-    public ResponseData<List<Posting>> getWaitingPost() {
-        List<Posting> postingList = postingService.getWaitingPost();
+    @GetMapping
+    public ResponseData<List<Posting>> getPostByStatus(
+            @RequestParam(name = "type") PostingStatus status,
+            @RequestParam(name = "sort") SortMethod sort
+    ) {
+        List<Posting> postingList = postingService.getPostByStatusAndSort(status, sort);
         return new ResponseData<>(
                 HttpStatus.OK,
                 "대기중인 게시물 조회 성공",
-                postingList
-        );
-    }
-
-    @GetMapping("/solved")
-    public ResponseData<List<Posting>> getSolvedPost() {
-        List<Posting> postingList = postingService.getSolvedPost();
-        return new ResponseData<>(
-                HttpStatus.OK,
-                "해결된 게시물 조회 성공",
-                postingList
-        );
-    }
-
-    @GetMapping("/refuse")
-    public ResponseData<List<Posting>> getRefusePost() {
-        List<Posting> postingList = postingService.getRefusedPost();
-        return new ResponseData<>(
-                HttpStatus.OK,
-                "해결된 게시물 조회 성공",
                 postingList
         );
     }

@@ -6,11 +6,11 @@ import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingSympathy;
+import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
-import com.stuent.dpply.common.exception.ForbiddenException;
 import com.stuent.dpply.common.exception.NotFoundException;
 import com.stuent.dpply.common.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +27,8 @@ public class PostingServiceImpl implements PostingService{
     private final PostingSympathyRepository postingSympathyRepository;
 
     @Override
-    public List<Posting> getWaitingPost() {
-        return postingRepository.findByStatus(PostingStatus.WAITING);
-    }
-
-    @Override
-    public List<Posting> getSolvedPost() {
-        return postingRepository.findByStatus(PostingStatus.SOLVED);
-    }
-
-    @Override
-    public List<Posting> getRefusedPost() {
-        return postingRepository.findByStatus(PostingStatus.REFUSED);
+    public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
+        return postingRepository.findByStatus(status);
     }
 
     @Override
