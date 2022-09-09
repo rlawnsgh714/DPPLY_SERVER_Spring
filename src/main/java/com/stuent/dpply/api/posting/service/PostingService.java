@@ -25,5 +25,7 @@ public interface PostingService {
 
     void refusePost(int id);
 
-    void createSympathy(User user, int id);
+    void signSympathy(User user, int id);
+
+    void cancelSympathy(User user, int id);
 }

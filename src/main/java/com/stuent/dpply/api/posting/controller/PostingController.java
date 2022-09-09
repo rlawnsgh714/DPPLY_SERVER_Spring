@@ -117,14 +117,26 @@ public class PostingController {
     }
 
     @PostMapping("/sympathy/{id}")
-    public Response createSympathy(
+    public Response signSympathy(
             @RequestAttribute User user,
             @PathVariable int id
     ) {
-        postingService.createSympathy(user, id);
+        postingService.signSympathy(user, id);
         return new Response(
                 HttpStatus.OK,
                 "공감 표시 성공"
+        );
+    }
+
+    @PostMapping("/sympathy-cancel/{id}")
+    public Response cancelSympathy(
+            @RequestAttribute User user,
+            @PathVariable int id
+    ) {
+        postingService.cancelSympathy(user, id);
+        return new Response(
+                HttpStatus.OK,
+                "공감 취소 성공"
         );
     }
 }

@@ -7,6 +7,7 @@ import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingSympathy;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
+import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
 import com.stuent.dpply.common.exception.ForbiddenException;
@@ -88,13 +89,25 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void createSympathy(User user, int id) {
+    public void signSympathy(User user, int id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
-        PostingSympathy postingSympathy = PostingSympathy.builder()
-                .posting(posting)
-                .user(user)
-                .build();
+        PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
+                .orElseGet(() -> PostingSympathy.builder()
+                        .posting(posting)
+                        .user(user)
+                        .build());
+        postingSympathy.updateStatus(PostingSympathyStatus.YES);
+        postingSympathyRepository.save(postingSympathy);
+    }
+
+    @Override
+    public void cancelSympathy(User user, int id) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
+                .orElseThrow(() -> new NotFoundException("공감 표시를 하지 않았습니다"));
+        postingSympathy.updateStatus(PostingSympathyStatus.NO);
         postingSympathyRepository.save(postingSympathy);
     }
 }
