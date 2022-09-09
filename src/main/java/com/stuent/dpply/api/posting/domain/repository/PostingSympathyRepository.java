@@ -12,6 +12,4 @@ import java.util.Optional;
 public interface PostingSympathyRepository extends JpaRepository<PostingSympathy, Integer> {
 
     Optional<PostingSympathy> findByUserAndPosting(User user, Posting posting);
-
-    boolean existsByUserAndPosting(User user, Posting posting);
 }

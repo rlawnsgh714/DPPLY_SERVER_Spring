@@ -46,7 +46,7 @@ public class PostingController {
     ) {
         postingService.createPost(user, dto);
         return new Response(
-                HttpStatus.OK,
+                HttpStatus.CREATED,
                 "게시물 작성 성공"
         );
     }
@@ -84,7 +84,7 @@ public class PostingController {
     ) {
         postingService.soledPost(id);
         return new Response(
-                HttpStatus.OK,
+                HttpStatus.CREATED,
                 "게시물 해결 처리 성공"
         );
     }
@@ -96,7 +96,7 @@ public class PostingController {
     ) {
         postingService.refusePost(id);
         return new Response(
-                HttpStatus.OK,
+                HttpStatus.CREATED,
                 "게시물 기각 처리 성공"
         );
     }
@@ -108,7 +108,7 @@ public class PostingController {
     ) {
         postingService.signSympathy(user, id);
         return new Response(
-                HttpStatus.OK,
+                HttpStatus.CREATED,
                 "공감 표시 성공"
         );
     }
@@ -120,7 +120,7 @@ public class PostingController {
     ) {
         postingService.cancelSympathy(user, id);
         return new Response(
-                HttpStatus.OK,
+                HttpStatus.CREATED,
                 "공감 취소 성공"
         );
     }
