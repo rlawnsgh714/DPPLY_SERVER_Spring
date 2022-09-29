@@ -40,6 +40,8 @@ public class Posting {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createAt;
 
+    private LocalDate updateAt;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_user_id")
     private User user;
@@ -49,6 +51,10 @@ public class Posting {
     }
     public void updateStatus(PostingStatus status){
         this.status = status;
+    }
+
+    public void updateDate(LocalDate localDate) {
+        this.updateAt = localDate;
     }
 
     @Builder
