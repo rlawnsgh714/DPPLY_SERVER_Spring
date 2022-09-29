@@ -11,12 +11,14 @@ import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
+import com.stuent.dpply.common.exception.ForbiddenException;
 import com.stuent.dpply.common.exception.NotFoundException;
 import com.stuent.dpply.common.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -33,6 +35,11 @@ public class PostingServiceImpl implements PostingService{
 
     @Override
     public void createPost(User user, CreatePostDto dto) {
+        LocalDate now = LocalDate.now();
+        int postingCount = postingRepository.countByUserAndCreateAtBetween(user, now.minusMonths(1), now);
+        if(postingCount >= 3) {
+            throw new ForbiddenException("한 달간 3개 이상의 건의를 넣을 수 없습니다");
+        }
         Posting posting = Posting.builder()
                 .text(dto.getText())
                 .user(user)
@@ -48,6 +55,7 @@ public class PostingServiceImpl implements PostingService{
             throw new UnauthorizedException("다른 사람의 게시물은 수정할 수 없습니다");
         }
         posting.updatePosting(dto.getText());
+        posting.updateDate(LocalDate.now());
         postingRepository.save(posting);
     }
 
