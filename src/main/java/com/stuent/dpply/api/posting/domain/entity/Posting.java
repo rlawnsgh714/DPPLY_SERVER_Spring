@@ -19,7 +19,7 @@ import java.util.List;
 public class Posting {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String text;

@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class PostingSympathy {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_posting_id")

@@ -68,7 +68,7 @@ public class PostingController {
     @DeleteMapping("/{id}")
     public Response deletePost(
             @RequestAttribute User user,
-            @PathVariable int id
+            @PathVariable Long id
     ) {
         postingService.deletePost(user, id);
         return new Response(
@@ -80,7 +80,7 @@ public class PostingController {
     @CheckAuthorization(roles = UserRole.ADMIN)
     @PostMapping("/solve/{id}")
     public Response solvePost(
-            @PathVariable int id
+            @PathVariable Long id
     ) {
         postingService.soledPost(id);
         return new Response(
@@ -92,7 +92,7 @@ public class PostingController {
     @CheckAuthorization(roles = UserRole.ADMIN)
     @PostMapping("/refuse/{id}")
     public Response refusePost(
-            @PathVariable int id
+            @PathVariable Long id
     ) {
         postingService.refusePost(id);
         return new Response(
@@ -104,7 +104,7 @@ public class PostingController {
     @PostMapping("/sympathy/{id}")
     public Response signSympathy(
             @RequestAttribute User user,
-            @PathVariable int id
+            @PathVariable Long id
     ) {
         postingService.signSympathy(user, id);
         return new Response(
@@ -116,7 +116,7 @@ public class PostingController {
     @PostMapping("/sympathy-cancel/{id}")
     public Response cancelSympathy(
             @RequestAttribute User user,
-            @PathVariable int id
+            @PathVariable Long id
     ) {
         postingService.cancelSympathy(user, id);
         return new Response(

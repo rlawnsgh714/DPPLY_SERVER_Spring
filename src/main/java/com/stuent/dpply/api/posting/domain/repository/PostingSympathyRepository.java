@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PostingSympathyRepository extends JpaRepository<PostingSympathy, Integer> {
+public interface PostingSympathyRepository extends JpaRepository<PostingSympathy, Long> {
 
     Optional<PostingSympathy> findByUserAndPosting(User user, Posting posting);
 }

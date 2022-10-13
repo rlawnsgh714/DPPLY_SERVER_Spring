@@ -17,13 +17,13 @@ public interface PostingService {
 
     void modifyPost(User user, ModifyPostDto dto);
 
-    void deletePost(User user, int id);
+    void deletePost(User user, Long id);
 
-    void soledPost(int id);
+    void soledPost(Long id);
 
-    void refusePost(int id);
+    void refusePost(Long id);
 
-    void signSympathy(User user, int id);
+    void signSympathy(User user, Long id);
 
-    void cancelSympathy(User user, int id);
+    void cancelSympathy(User user, Long id);
 }
