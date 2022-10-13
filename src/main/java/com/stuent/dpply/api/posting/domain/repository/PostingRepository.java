@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface PostingRepository extends JpaRepository<Posting, Integer> {
+public interface PostingRepository extends JpaRepository<Posting, Long> {
 
     List<Posting> findByStatus(PostingStatus status);
 

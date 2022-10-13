@@ -9,6 +9,7 @@ import com.stuent.dpply.api.posting.domain.entity.PostingSympathy;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
+import com.stuent.dpply.api.posting.domain.repository.PostingCountRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
 import com.stuent.dpply.common.exception.ForbiddenException;
@@ -27,6 +28,7 @@ public class PostingServiceImpl implements PostingService{
 
     private final PostingRepository postingRepository;
     private final PostingSympathyRepository postingSympathyRepository;
+    private final PostingCountRepository postingCountRepository;
 
     @Override
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
@@ -37,8 +39,11 @@ public class PostingServiceImpl implements PostingService{
     public void createPost(User user, CreatePostDto dto) {
         LocalDate now = LocalDate.now();
         int postingCount = postingRepository.countByUserAndCreateAtBetween(user, now.minusMonths(1), now);
-        if(postingCount >= 3) {
-            throw new ForbiddenException("한 달간 3개 이상의 건의를 넣을 수 없습니다");
+
+        int count = postingCountRepository.findById(1L)
+                .orElseThrow(() -> new NotFoundException("건의함 갯수으로 정한 데이터가 비었습니다")).getCount();
+        if(postingCount >= count) {
+            throw new ForbiddenException("한 달간 "+ count + "개 이상의 건의를 넣을 수 없습니다");
         }
         Posting posting = Posting.builder()
                 .text(dto.getText())
@@ -61,7 +66,7 @@ public class PostingServiceImpl implements PostingService{
 
     @Override
     @Transactional
-    public void deletePost(User user, int id) {
+    public void deletePost(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         if(!(posting.getUser().equals(user)) && !(user.getRole().equals(UserRole.ADMIN))) {
@@ -71,7 +76,7 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void soledPost(int id) {
+    public void soledPost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         posting.updateStatus(PostingStatus.SOLVED);
@@ -79,7 +84,7 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void refusePost(int id) {
+    public void refusePost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         posting.updateStatus(PostingStatus.REFUSED);
@@ -87,7 +92,7 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void signSympathy(User user, int id) {
+    public void signSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
@@ -100,7 +105,7 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void cancelSympathy(User user, int id) {
+    public void cancelSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)

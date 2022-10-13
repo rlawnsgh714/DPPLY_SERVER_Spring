@@ -6,6 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ModifyPostDto {
-    private int postingId;
+    private Long postingId;
     private String text;
 }
