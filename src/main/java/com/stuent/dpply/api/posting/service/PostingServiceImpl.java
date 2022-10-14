@@ -36,6 +36,12 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
+    public Posting getPostById(Long id) {
+        return postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 게시물이 없습니다"));
+    }
+
+    @Override
     public void createPost(User user, CreatePostDto dto) {
         LocalDate now = LocalDate.now();
         int postingCount = postingRepository.countByUserAndCreateAtBetween(user, now.minusMonths(1), now);

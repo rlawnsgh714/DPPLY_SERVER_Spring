@@ -1,18 +1,17 @@
 package com.stuent.dpply.api.auth.service;
 
-import com.stuent.dpply.api.auth.domain.dto.DauthRequestDto;
-import com.stuent.dpply.api.auth.domain.dto.DauthServerDto;
-import com.stuent.dpply.api.auth.domain.dto.DodamLoginDto;
-import com.stuent.dpply.api.auth.domain.dto.DodamOpenApiDto;
+import com.stuent.dpply.api.auth.domain.dto.*;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
+import com.stuent.dpply.api.auth.domain.ro.DauthServerDto;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
 import com.stuent.dpply.common.config.properties.AppProperties;
 import com.stuent.dpply.common.config.restemplate.RestTemplateConfig;
+import com.stuent.dpply.common.exception.ForbiddenException;
 import com.stuent.dpply.common.exception.NotFoundException;
-import com.stuent.dpply.common.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
@@ -31,6 +31,10 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public LoginRo dodamLogin(DodamLoginDto dto) {
         DauthServerDto dauthToken = getDauthToken(dto.getCode());
+        if(dauthToken.getAccess_token() == null) {
+            throw new ForbiddenException("변조된 code입니다");
+        }
+        log.info(dauthToken.getAccess_token());
         DodamOpenApiDto.DodamInfoData info = getDodamInfo(dauthToken.getAccess_token()).getData();
         User user = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
                 .uniqueId(info.getUniqueId())
@@ -40,6 +44,7 @@ public class AuthServiceImpl implements AuthService{
                 .name(info.getName())
                 .email(info.getEmail())
                 .profileImage(info.getProfileImage())
+                .role(UserRole.valueOfNumber(info.getAccessLevel()))
                 .build());
         User savedUser = authRepository.save(user);
         return new LoginRo(savedUser, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
@@ -71,6 +76,7 @@ public class AuthServiceImpl implements AuthService{
     private DodamOpenApiDto getDodamInfo(String token){
         HttpHeaders headers = new HttpHeaders();
         headers.add("authorization", "Bearer " + token);
+        log.info("Bearer" + token);
         return restTemplateConfig.dodamOpenApiTemplate()
                 .exchange(
                         "/user",

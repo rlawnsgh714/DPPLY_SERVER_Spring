@@ -20,9 +20,10 @@ spring:
         driver-class-name: com.mysql.cj.jdbc.Driver
 
 app:
-    DAUTH_SERVER: http://101.101.209.184:8003
-    OPEN_SERVER: http://101.101.209.184:8004
+    DAUTH_SERVER: http://101.101.209.184:8003/api
+    OPEN_API_SERVER: http://101.101.209.184:8004/api
     CLIENT_ID: 266c66937d2e412cbf18fcae14de7ef4387a8d093ae54f2b9c808ad53a1b54dd
     CLIENT_SECRET: 0d9006b4da614a3d9b6cb05916bd0991c0232015df5b48f5a27344a5ea7e4ad4
     ACCESS_SECRET: MyAccessSecretKey1$1$234567
     REFRESH_SECRET: MyRefreshSecretKey1$1$234567
+    REDIRECT_URL: http://localhost:3000/loading

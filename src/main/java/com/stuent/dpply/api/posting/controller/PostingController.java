@@ -38,6 +38,18 @@ public class PostingController {
         );
     }
 
+    @GetMapping("{id}")
+    public ResponseData<Posting> getPostById(
+            @PathVariable Long id
+    ) {
+        Posting posting = postingService.getPostById(id);
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "대기중인 게시물 조회 성공",
+                posting
+        );
+    }
+
     @CheckAuthorization
     @PostMapping
     public Response createPost(

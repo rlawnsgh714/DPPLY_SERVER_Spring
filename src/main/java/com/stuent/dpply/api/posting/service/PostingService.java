@@ -13,6 +13,8 @@ public interface PostingService {
 
     List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort);
 
+    Posting getPostById(Long id);
+
     void createPost(User user, CreatePostDto dto);
 
     void modifyPost(User user, ModifyPostDto dto);
