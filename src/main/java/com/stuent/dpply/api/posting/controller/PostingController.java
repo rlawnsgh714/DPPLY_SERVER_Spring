@@ -38,7 +38,7 @@ public class PostingController {
         );
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseData<Posting> getPostById(
             @PathVariable Long id
     ) {

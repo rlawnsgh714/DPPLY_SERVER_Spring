@@ -6,6 +6,8 @@ import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.auth.domain.ro.DauthServerDto;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
+import com.stuent.dpply.api.token.domain.enums.JWT;
+import com.stuent.dpply.api.token.service.TokenService;
 import com.stuent.dpply.common.config.properties.AppProperties;
 import com.stuent.dpply.common.config.restemplate.RestTemplateConfig;
 import com.stuent.dpply.common.exception.ForbiddenException;
@@ -27,6 +29,7 @@ public class AuthServiceImpl implements AuthService{
     private final RestTemplateConfig restTemplateConfig;
     private final AppProperties appProperties;
     private final AuthRepository authRepository;
+    private final TokenService tokenService;
 
     @Override
     public LoginRo dodamLogin(DodamLoginDto dto) {
@@ -34,7 +37,6 @@ public class AuthServiceImpl implements AuthService{
         if(dauthToken.getAccess_token() == null) {
             throw new ForbiddenException("변조된 code입니다");
         }
-        log.info(dauthToken.getAccess_token());
         DodamOpenApiDto.DodamInfoData info = getDodamInfo(dauthToken.getAccess_token()).getData();
         User user = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
                 .uniqueId(info.getUniqueId())
@@ -47,7 +49,9 @@ public class AuthServiceImpl implements AuthService{
                 .role(UserRole.valueOfNumber(info.getAccessLevel()))
                 .build());
         User savedUser = authRepository.save(user);
-        return new LoginRo(savedUser, dauthToken.getAccess_token(), dauthToken.getRefresh_token());
+        String token = tokenService.generateToken(user.getUniqueId(), JWT.ACCESS);
+        String refreshToken = tokenService.generateToken(user.getUniqueId(), JWT.REFRESH);
+        return new LoginRo(savedUser, token, refreshToken);
     }
 
     @Override
@@ -76,7 +80,6 @@ public class AuthServiceImpl implements AuthService{
     private DodamOpenApiDto getDodamInfo(String token){
         HttpHeaders headers = new HttpHeaders();
         headers.add("authorization", "Bearer " + token);
-        log.info("Bearer" + token);
         return restTemplateConfig.dodamOpenApiTemplate()
                 .exchange(
                         "/user",
