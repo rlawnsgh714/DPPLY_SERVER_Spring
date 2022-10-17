@@ -5,6 +5,7 @@ import com.stuent.dpply.api.token.service.TokenService;
 import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.extractor.AuthorizationExtractor;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,23 +13,23 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @Component
 @AllArgsConstructor
-public class BearerAuthInterceptor implements HandlerInterceptor {
+public class AuthInterceptor implements HandlerInterceptor {
     private AuthorizationExtractor authExtractor;
     private TokenService tokenService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response, Object handler) {
-        if(!(handler instanceof HandlerMethod)) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+        if(!(handler instanceof HandlerMethod handlerMethod)) {
             return true;
         }
 
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        CheckAuthorization checkAuthorization = handlerMethod.getMethodAnnotation(CheckAuthorization.class);
+        CheckAuthorization userLoginToken = handlerMethod.getMethodAnnotation(CheckAuthorization.class);
 
-        if (checkAuthorization == null) {
+        if (userLoginToken == null) {
             return true;
         }
 
@@ -37,12 +38,12 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (tokenService.verifyToken(token) == null) {
+        User user = tokenService.verifyToken(token);
+        if (user == null) {
             throw new IllegalArgumentException("유효하지 않은 토큰");
         }
 
-        User auth = tokenService.verifyToken(token);
-        request.setAttribute("authId", auth);
+        request.setAttribute("user", user);
         return true;
     }
 }

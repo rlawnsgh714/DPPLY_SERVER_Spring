@@ -1,4 +1,4 @@
-package com.stuent.dpply.api.auth.domain.dto;
+package com.stuent.dpply.api.auth.domain.ro;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

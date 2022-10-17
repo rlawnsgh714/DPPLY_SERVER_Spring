@@ -2,7 +2,6 @@ package com.stuent.dpply.api.token.service;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
-import com.stuent.dpply.api.auth.service.AuthService;
 import com.stuent.dpply.api.token.domain.dto.RemakeRefreshTokenDto;
 import com.stuent.dpply.api.token.domain.enums.JWT;
 import com.stuent.dpply.common.config.properties.AppProperties;
@@ -29,7 +28,6 @@ public class TokenServiceImpl implements TokenService{
     private final AppProperties appProperties;
     private final long JWT_ACCESS_EXPIRE = 60 * 60 * 1000;
     private final long JWT_REFRESH_EXPIRE = 60 * 60 * 1000 * 24 * 7;
-    private final AuthService authService;
     private final AuthRepository authRepository;
 
     @Override
@@ -37,16 +35,16 @@ public class TokenServiceImpl implements TokenService{
         Date expiredAt = new Date();
         String secretKey;
 
-        if(jwt.equals(JWT.ACCESS)){
+        if (jwt.equals(JWT.ACCESS)) {
             expiredAt = new Date(expiredAt.getTime() + JWT_ACCESS_EXPIRE);
             secretKey = appProperties.getACCESS_SECRET();
-        }else{
+        } else {
             expiredAt = new Date(expiredAt.getTime() + JWT_REFRESH_EXPIRE);
             secretKey = appProperties.getREFRESH_SECRET();
         }
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put("authId", uniqueId);
+        claims.put("userId", uniqueId);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -57,12 +55,16 @@ public class TokenServiceImpl implements TokenService{
                 .compact();
     }
 
+    private String getJwtSecretByType(JWT jwt) {
+        return (jwt == JWT.ACCESS)
+                ? appProperties.getACCESS_SECRET()
+                : appProperties.getREFRESH_SECRET();
+    }
+
     private Claims parseToken(String token, JWT jwt) {
         try {
             return Jwts.parser()
-                    .setSigningKey(
-                            jwt == JWT.ACCESS ?
-                                    appProperties.getACCESS_SECRET() : appProperties.getREFRESH_SECRET())
+                    .setSigningKey(getJwtSecretByType(jwt))
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
@@ -77,7 +79,7 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public User verifyToken(String token) {
         return authRepository.findById(
-                parseToken(token, JWT.ACCESS).get("authId").toString())
+                parseToken(token, JWT.ACCESS).get("userId").toString())
                 .orElseThrow(() -> new NotFoundException("해당 아이디는 존재하지 않습니다"));
     }
 
@@ -88,7 +90,7 @@ public class TokenServiceImpl implements TokenService{
         }
 
         Claims claims = this.parseToken(refreshToken.getRefreshToken(), JWT.REFRESH);
-        User user = authService.getUserById(claims.get("userId").toString());
+        User user = authRepository.getReferenceById(claims.get("userId").toString());
 
         return generateToken(user.getUniqueId(), JWT.ACCESS);
     }

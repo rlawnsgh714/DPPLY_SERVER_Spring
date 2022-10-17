@@ -16,4 +16,5 @@ public class AppProperties {
     private String CLIENT_SECRET;
     private String ACCESS_SECRET;
     private String REFRESH_SECRET;
+    private String REDIRECT_URL;
 }

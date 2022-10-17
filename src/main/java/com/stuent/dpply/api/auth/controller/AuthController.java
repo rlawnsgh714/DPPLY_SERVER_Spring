@@ -44,6 +44,7 @@ public class AuthController {
         );
     }
 
+    @CheckAuthorization
     @GetMapping("/my")
     public ResponseData<User> getMyInfo(
             @RequestAttribute User user
