@@ -2,7 +2,9 @@ package com.stuent.dpply.api.posting.controller;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.enums.UserRole;
+import com.stuent.dpply.api.posting.domain.dto.CreateCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
+import com.stuent.dpply.api.posting.domain.dto.ModifyCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingComment;
@@ -139,6 +141,7 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @PostMapping("/sympathy-cancel/{id}")
     public Response cancelSympathy(
             @RequestAttribute User user,
@@ -151,11 +154,11 @@ public class PostingController {
         );
     }
 
-    @GetMapping("/comment/{id}")
+    @GetMapping("/comment/{postId}")
     public ResponseData<List<PostingComment>> getPostingComment(
-            @PathVariable Long id
+            @PathVariable Long postId
     ) {
-        List<PostingComment> postingCommentList = postingService.getPostingComment(id);
+        List<PostingComment> postingCommentList = postingService.getPostingComment(postId);
         return new ResponseData<>(
                 HttpStatus.OK,
                 "댓글 가져오기 성공",
@@ -163,14 +166,30 @@ public class PostingController {
         );
     }
 
-    @PostMapping("/comment/{id}")
+    @CheckAuthorization
+    @PostMapping("/comment/{postId}")
     public Response createComment(
-            @PathVariable Long id
+            @RequestAttribute User user,
+            @PathVariable Long postId,
+            @RequestBody @Valid CreateCommentDto dto
     ) {
-
+        postingService.createComment(user, postId, dto);
         return new Response(
                 HttpStatus.OK,
                 "댓글 작성 성공"
+        );
+    }
+
+    @PatchMapping("/comment/{commentId}")
+    public Response modifyComment(
+            @RequestAttribute User user,
+            @PathVariable Long commentId,
+            @RequestBody ModifyCommentDto dto
+    ) {
+        postingService.modifyComment(user, commentId, dto);
+        return new Response(
+                HttpStatus.OK,
+                "댓글 수정 성공"
         );
     }
 }

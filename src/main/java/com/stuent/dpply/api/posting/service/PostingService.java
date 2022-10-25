@@ -3,6 +3,7 @@ package com.stuent.dpply.api.posting.service;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.dto.CreateCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
+import com.stuent.dpply.api.posting.domain.dto.ModifyCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingComment;
@@ -35,5 +36,7 @@ public interface PostingService {
 
     List<PostingComment> getPostingComment(Long id);
 
-    void creatComment(Long id, CreateCommentDto dto);
+    void createComment(User user, Long id, CreateCommentDto dto);
+
+    void modifyComment(User user, Long id, ModifyCommentDto dto);
 }

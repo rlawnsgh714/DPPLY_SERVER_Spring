@@ -4,6 +4,7 @@ import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreateCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
+import com.stuent.dpply.api.posting.domain.dto.ModifyCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingComment;
@@ -143,13 +144,22 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void creatComment(Long id, CreateCommentDto dto) {
+    public void createComment(User user, Long id, CreateCommentDto dto) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         PostingComment comment = PostingComment.builder()
+                .user(user)
                 .posting(posting)
                 .comment(dto.getComment())
                 .build();
         postingCommentRepository.save(comment);
+    }
+
+    @Override
+    public void modifyComment(User user, Long id, ModifyCommentDto dto) {
+        PostingComment postingComment = postingCommentRepository.findById(id)
+                        .orElseThrow(() -> new NotFoundException("해당 댓글은 존재하지 않습니다"));
+        postingComment.modifyComment(dto.getComment());
+        postingCommentRepository.save(postingComment);
     }
 }
