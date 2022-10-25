@@ -180,6 +180,7 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @PatchMapping("/comment/{commentId}")
     public Response modifyComment(
             @RequestAttribute User user,
@@ -190,6 +191,19 @@ public class PostingController {
         return new Response(
                 HttpStatus.OK,
                 "댓글 수정 성공"
+        );
+    }
+
+    @CheckAuthorization
+    @DeleteMapping("/comment/{commentId}")
+    public Response deleteComment(
+            @RequestAttribute User user,
+            @PathVariable Long commentId
+    ) {
+        postingService.deleteComment(user, commentId);
+        return new Response(
+                HttpStatus.OK,
+                "댓글 삭제 성공"
         );
     }
 }

@@ -39,4 +39,6 @@ public interface PostingService {
     void createComment(User user, Long id, CreateCommentDto dto);
 
     void modifyComment(User user, Long id, ModifyCommentDto dto);
+
+    void deleteComment(User user, Long id);
 }

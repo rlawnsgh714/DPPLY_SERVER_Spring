@@ -159,7 +159,20 @@ public class PostingServiceImpl implements PostingService{
     public void modifyComment(User user, Long id, ModifyCommentDto dto) {
         PostingComment postingComment = postingCommentRepository.findById(id)
                         .orElseThrow(() -> new NotFoundException("해당 댓글은 존재하지 않습니다"));
+        if(!user.equals(postingComment.getUser())) {
+            throw new ForbiddenException("다른 사람은 수정할 수 없습니다");
+        }
         postingComment.modifyComment(dto.getComment());
         postingCommentRepository.save(postingComment);
+    }
+
+    @Override
+    public void deleteComment(User user, Long id) {
+        PostingComment postingComment = postingCommentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 댓글은 존재하지 않습니다"));
+        if(!user.equals(postingComment.getUser())) {
+            throw new ForbiddenException("다른 사람은 삭제할 수 없습니다");
+        }
+        postingCommentRepository.delete(postingComment);
     }
 }
