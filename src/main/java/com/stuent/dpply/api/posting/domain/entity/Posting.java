@@ -1,6 +1,8 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
@@ -34,10 +36,6 @@ public class Posting {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PostingStatus status;
-
-    @OneToMany(mappedBy = "posting")
-    @JsonManagedReference
-    private List<PostingSympathy> sympathyList;
 
     @CreatedDate
     @Column(nullable = false)

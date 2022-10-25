@@ -1,5 +1,6 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
@@ -19,7 +20,6 @@ public class PostingSympathy {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_posting_id")
-    @JsonManagedReference
     private Posting posting;
 
     @OneToOne(fetch = FetchType.EAGER)
