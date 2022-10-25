@@ -16,4 +16,6 @@ public class CreatePostDto {
     private String text;
     @NotEmpty
     private PostingTag tag;
+    @NotEmpty
+    private String imageUrl;
 }

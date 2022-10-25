@@ -1,6 +1,5 @@
 package com.stuent.dpply.api.posting.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.api.auth.domain.entity.User;
@@ -54,6 +53,8 @@ public class Posting {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_user_id")
     private User user;
+
+    private String imageUrl;
 
     public void updatePosting(String title, String text, PostingStatus status, LocalDate updateAt){
         this.title = title;
