@@ -33,7 +33,11 @@ public class PostingServiceImpl implements PostingService{
 
     @Override
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
-        return postingRepository.findByStatus(status);
+        if(sort.equals(SortMethod.RECENT)) {
+            return postingRepository.findByStatusOrderByCreateAt(status);
+        }else {
+            return postingRepository.findByStatusOrderBySympathyCount(status);
+        }
     }
 
     @Override

@@ -12,7 +12,9 @@ import java.util.List;
 @Repository
 public interface PostingRepository extends JpaRepository<Posting, Long> {
 
-    List<Posting> findByStatus(PostingStatus status);
+    List<Posting> findByStatusOrderByCreateAt(PostingStatus status);
+
+    List<Posting> findByStatusOrderBySympathyCount(PostingStatus status);
 
     int countByUserAndCreateAtBetween(User user, LocalDate createAt, LocalDate createAt2);
 }
