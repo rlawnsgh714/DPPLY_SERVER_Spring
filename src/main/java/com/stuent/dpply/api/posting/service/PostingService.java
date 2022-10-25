@@ -4,6 +4,7 @@ import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
+import com.stuent.dpply.api.posting.domain.entity.PostingComment;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 
@@ -30,4 +31,6 @@ public interface PostingService {
     void signSympathy(User user, Long id);
 
     void cancelSympathy(User user, Long id);
+
+    List<PostingComment> getPostingComment(Long id);
 }

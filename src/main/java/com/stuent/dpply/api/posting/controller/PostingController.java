@@ -5,6 +5,7 @@ import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
+import com.stuent.dpply.api.posting.domain.entity.PostingComment;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.service.PostingService;
@@ -147,6 +148,18 @@ public class PostingController {
         return new Response(
                 HttpStatus.CREATED,
                 "공감 취소 성공"
+        );
+    }
+
+    @GetMapping("/comment/{id}")
+    public ResponseData<List<PostingComment>> getPostingComment(
+            @PathVariable Long id
+    ) {
+        List<PostingComment> postingCommentList = postingService.getPostingComment(id);
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "댓글 가져오기 성공",
+                postingCommentList
         );
     }
 }

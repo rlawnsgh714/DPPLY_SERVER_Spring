@@ -22,6 +22,9 @@ public class Posting {
     private Long id;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String text;
 
     @Column(nullable = false)
@@ -39,6 +42,9 @@ public class Posting {
     @Column(nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createAt;
+
+    @Column(nullable = false)
+    private String tag;
 
     private LocalDate updateAt;
 

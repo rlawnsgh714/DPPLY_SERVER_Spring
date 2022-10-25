@@ -5,10 +5,12 @@ import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
+import com.stuent.dpply.api.posting.domain.entity.PostingComment;
 import com.stuent.dpply.api.posting.domain.entity.PostingSympathy;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
+import com.stuent.dpply.api.posting.domain.repository.PostingCommentRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingCountRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
@@ -30,6 +32,7 @@ public class PostingServiceImpl implements PostingService{
     private final PostingRepository postingRepository;
     private final PostingSympathyRepository postingSympathyRepository;
     private final PostingCountRepository postingCountRepository;
+    private final PostingCommentRepository postingCommentRepository;
 
     @Override
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
@@ -129,5 +132,12 @@ public class PostingServiceImpl implements PostingService{
                 .orElseThrow(() -> new NotFoundException("공감 표시를 하지 않았습니다"));
         postingSympathy.updateStatus(PostingSympathyStatus.NO);
         postingSympathyRepository.save(postingSympathy);
+    }
+
+    @Override
+    public List<PostingComment> getPostingComment(Long id) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        return postingCommentRepository.findByPosting(posting);
     }
 }
