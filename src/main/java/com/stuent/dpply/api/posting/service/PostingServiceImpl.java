@@ -2,6 +2,7 @@ package com.stuent.dpply.api.posting.service;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.enums.UserRole;
+import com.stuent.dpply.api.posting.domain.dto.CreateCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
@@ -139,5 +140,16 @@ public class PostingServiceImpl implements PostingService{
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
         return postingCommentRepository.findByPosting(posting);
+    }
+
+    @Override
+    public void creatComment(Long id, CreateCommentDto dto) {
+        Posting posting = postingRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+        PostingComment comment = PostingComment.builder()
+                .posting(posting)
+                .comment(dto.getComment())
+                .build();
+        postingCommentRepository.save(comment);
     }
 }

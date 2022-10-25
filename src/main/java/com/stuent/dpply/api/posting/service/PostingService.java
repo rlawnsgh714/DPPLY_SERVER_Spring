@@ -1,6 +1,7 @@
 package com.stuent.dpply.api.posting.service;
 
 import com.stuent.dpply.api.auth.domain.entity.User;
+import com.stuent.dpply.api.posting.domain.dto.CreateCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.CreatePostDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
@@ -33,4 +34,6 @@ public interface PostingService {
     void cancelSympathy(User user, Long id);
 
     List<PostingComment> getPostingComment(Long id);
+
+    void creatComment(Long id, CreateCommentDto dto);
 }

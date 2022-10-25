@@ -162,4 +162,15 @@ public class PostingController {
                 postingCommentList
         );
     }
+
+    @PostMapping("/comment/{id}")
+    public Response createComment(
+            @PathVariable Long id
+    ) {
+
+        return new Response(
+                HttpStatus.OK,
+                "댓글 작성 성공"
+        );
+    }
 }
