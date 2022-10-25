@@ -16,9 +16,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 @EnableWebMvc
 public class SwaggerConfig implements WebMvcConfigurer {
 
-    private final String TITLE = "DodamDodam";
-    private final String DESCRIPTION = "DodamDodam API Docs";
-    private final String VERSION = "V6";
+    private final String TITLE = "소곤소곤";
+    private final String DESCRIPTION = "소곤소곤 API Docs";
+    private final String VERSION = "V1";
 
     @Bean
     public InternalResourceViewResolver defaultViewResolver() {

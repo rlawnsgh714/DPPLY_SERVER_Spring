@@ -7,6 +7,7 @@ import com.stuent.dpply.api.posting.domain.dto.ModifyCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingComment;
+import com.stuent.dpply.api.posting.domain.enums.PostingTag;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 
@@ -17,6 +18,8 @@ public interface PostingService {
     List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort);
 
     List<Posting> getPostByPageAndLimit(int page, int limit);
+
+    List<Posting> getPostByTag(PostingTag tag);
 
     Posting getPostById(Long id);
 

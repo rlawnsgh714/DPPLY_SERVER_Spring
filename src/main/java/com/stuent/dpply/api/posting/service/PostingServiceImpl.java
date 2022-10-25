@@ -9,6 +9,7 @@ import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingComment;
 import com.stuent.dpply.api.posting.domain.entity.PostingSympathy;
+import com.stuent.dpply.api.posting.domain.enums.PostingTag;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.domain.enums.PostingSympathyStatus;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,6 +54,11 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
+    public List<Posting> getPostByTag(PostingTag tag) {
+        return postingRepository.findByTag(tag);
+    }
+
+    @Override
     public Posting getPostById(Long id) {
         return postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 게시물이 없습니다"));
@@ -68,6 +75,8 @@ public class PostingServiceImpl implements PostingService{
             throw new ForbiddenException("한 달간 "+ count + "개 이상의 건의를 넣을 수 없습니다");
         }
         Posting posting = Posting.builder()
+                .title(dto.getTitle())
+                .tag(dto.getTag())
                 .text(dto.getText())
                 .user(user)
                 .build();
@@ -81,8 +90,7 @@ public class PostingServiceImpl implements PostingService{
         if(!(posting.getUser().equals(user))) {
             throw new UnauthorizedException("다른 사람의 게시물은 수정할 수 없습니다");
         }
-        posting.updatePosting(dto.getText());
-        posting.updateDate(LocalDate.now());
+        posting.updatePosting(dto.getTitle(), dto.getText(), posting.getStatus(), LocalDate.now());
         postingRepository.save(posting);
     }
 
@@ -101,7 +109,7 @@ public class PostingServiceImpl implements PostingService{
     public void soledPost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
-        posting.updateStatus(PostingStatus.SOLVED);
+        posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.SOLVED, null);
         postingRepository.save(posting);
     }
 
@@ -109,7 +117,7 @@ public class PostingServiceImpl implements PostingService{
     public void refusePost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
-        posting.updateStatus(PostingStatus.REFUSED);
+        posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.REFUSED,null);
         postingRepository.save(posting);
     }
 

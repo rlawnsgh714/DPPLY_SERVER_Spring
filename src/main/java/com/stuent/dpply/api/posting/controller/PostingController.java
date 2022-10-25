@@ -8,6 +8,7 @@ import com.stuent.dpply.api.posting.domain.dto.ModifyCommentDto;
 import com.stuent.dpply.api.posting.domain.dto.ModifyPostDto;
 import com.stuent.dpply.api.posting.domain.entity.Posting;
 import com.stuent.dpply.api.posting.domain.entity.PostingComment;
+import com.stuent.dpply.api.posting.domain.enums.PostingTag;
 import com.stuent.dpply.api.posting.domain.enums.SortMethod;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
 import com.stuent.dpply.api.posting.service.PostingService;
@@ -51,6 +52,17 @@ public class PostingController {
                 HttpStatus.OK,
                 "대기중인 게시물 조회 성공",
                 postingList
+        );
+    }
+
+    @GetMapping("/tag")
+    public ResponseData<List<Posting>> getPostByTag(
+            @RequestParam("tag")PostingTag tag
+    ) {
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "",
+                null
         );
     }
 

@@ -2,8 +2,10 @@ package com.stuent.dpply.api.posting.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.posting.domain.enums.PostingStatus;
+import com.stuent.dpply.api.posting.domain.enums.PostingTag;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +37,7 @@ public class Posting {
     private PostingStatus status;
 
     @OneToMany(mappedBy = "posting")
-    @JsonBackReference
+    @JsonManagedReference
     private List<PostingSympathy> sympathyList;
 
     @CreatedDate
@@ -43,8 +45,9 @@ public class Posting {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String tag;
+    private PostingTag tag;
 
     private LocalDate updateAt;
 
@@ -52,21 +55,19 @@ public class Posting {
     @JoinColumn(name = "fk_user_id")
     private User user;
 
-    public void updatePosting(String text){
+    public void updatePosting(String title, String text, PostingStatus status, LocalDate updateAt){
+        this.title = title;
         this.text = text;
-    }
-    public void updateStatus(PostingStatus status){
         this.status = status;
-    }
-
-    public void updateDate(LocalDate localDate) {
-        this.updateAt = localDate;
+        this.updateAt = updateAt;
     }
 
     @Builder
-    public Posting(String text, User user){
+    public Posting(String title, String text, User user, PostingTag tag){
+        this.title = title;
         this.text = text;
         this.user = user;
+        this.tag = tag;
         this.sympathyCount = 0;
         this.status = PostingStatus.WAITING;
         this.createAt = LocalDate.now();
