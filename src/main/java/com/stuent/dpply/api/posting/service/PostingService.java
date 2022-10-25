@@ -13,6 +13,8 @@ public interface PostingService {
 
     List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort);
 
+    List<Posting> getPostByPageAndLimit(int page, int limit);
+
     Posting getPostById(Long id);
 
     void createPost(User user, CreatePostDto dto);

@@ -16,6 +16,7 @@ import com.stuent.dpply.common.exception.ForbiddenException;
 import com.stuent.dpply.common.exception.NotFoundException;
 import com.stuent.dpply.common.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,12 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
         return postingRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<Posting> getPostByPageAndLimit(int page, int limit) {
+        PageRequest pageRequest = PageRequest.of(page - 1, limit);
+        return postingRepository.findAll(pageRequest).getContent();
     }
 
     @Override

@@ -38,6 +38,19 @@ public class PostingController {
         );
     }
 
+    @GetMapping("/page")
+    public ResponseData<List<Posting>> getPostBypage(
+            @RequestParam(name = "page") int page,
+            @RequestParam(name = "limit") int limit
+    ) {
+        List<Posting> postingList = postingService.getPostByPageAndLimit(page, limit);
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "대기중인 게시물 조회 성공",
+                postingList
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseData<Posting> getPostById(
             @PathVariable Long id
