@@ -27,3 +27,15 @@ app:
     ACCESS_SECRET: f2025a0a-d6a7-4fe9-aaea-14a8f759e378
     REFRESH_SECRET: f2025a0a-d6a7-4fe9-aaea-14a8f759e378
     REDIRECT_URL: http://localhost:3000/loading
+
+cloud:
+    aws:
+        credentials:
+            access-key: ohPhWEHljjB1aLOqxee4
+            secret-key: UJwqtXkNrkbZEwDy2Sb7MbFLVKvHiHsGFdMe4XdR
+        stack:
+            auto: false
+        region:
+            static: ap-northeast-2
+        s3:
+            bucket: dpply
