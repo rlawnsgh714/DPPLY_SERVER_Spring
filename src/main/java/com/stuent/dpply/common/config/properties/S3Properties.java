@@ -10,5 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("cloud.aws.s3")
 public class S3Properties {
+
+    private String endpoint;
     private String bucket;
 }

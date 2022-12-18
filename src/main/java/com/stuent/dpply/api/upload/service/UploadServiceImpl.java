@@ -3,10 +3,10 @@ package com.stuent.dpply.api.upload.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.stuent.dpply.common.config.properties.S3KeyProperties;
 import com.stuent.dpply.common.config.properties.S3Properties;
 import com.stuent.dpply.common.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UploadServiceImpl implements UploadService{
 
     private final AmazonS3Client amazonS3Client;
-    private final S3KeyProperties s3KeyProperties;
     private final S3Properties s3Properties;
 
     @Override
@@ -35,9 +35,12 @@ public class UploadServiceImpl implements UploadService{
             amazonS3Client.putObject(
                     new PutObjectRequest(s3Properties.getBucket(), fileName, convertFile).withCannedAcl(CannedAccessControlList.PublicRead));
 
+            convertFile.delete();
+
             return amazonS3Client.getUrl(s3Properties.getBucket(), fileName).toString();
         }catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         throw new InternalServerException("파일 업로드 서버 실패"); //FileUploadException
     }

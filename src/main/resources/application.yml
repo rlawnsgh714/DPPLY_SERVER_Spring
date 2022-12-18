@@ -31,11 +31,12 @@ app:
 cloud:
     aws:
         credentials:
-            access-key: ohPhWEHljjB1aLOqxee4
-            secret-key: UJwqtXkNrkbZEwDy2Sb7MbFLVKvHiHsGFdMe4XdR
+            access-key: h6EqG9HRPLnW3T1Dmtkg
+            secret-key: Mp3GRcjqMJB4VCSmf86lPeqx8UGiCaKBkNsOcYUc
         stack:
             auto: false
         region:
             static: ap-northeast-2
         s3:
+            endpoint: https://kr.object.ncloudstorage.com
             bucket: dpply
