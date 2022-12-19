@@ -17,9 +17,7 @@ import com.stuent.dpply.api.posting.domain.repository.PostingCommentRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingCountRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingRepository;
 import com.stuent.dpply.api.posting.domain.repository.PostingSympathyRepository;
-import com.stuent.dpply.common.exception.ForbiddenException;
-import com.stuent.dpply.common.exception.NotFoundException;
-import com.stuent.dpply.common.exception.UnauthorizedException;
+import com.stuent.dpply.api.posting.exception.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -60,7 +58,7 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public Posting getPostById(Long id) {
         return postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 게시물이 없습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
     }
 
     @Override
@@ -69,9 +67,9 @@ public class PostingServiceImpl implements PostingService{
         int postingCount = postingRepository.countByUserAndCreateAtBetween(user, now.minusMonths(1), now);
 
         int count = postingCountRepository.findById(1L)
-                .orElseThrow(() -> new NotFoundException("건의함 갯수으로 정한 데이터가 비었습니다")).getCount();
+                .orElseThrow(() -> PostCountNotFoundException.EXCEPTION).getCount();
         if(postingCount >= count) {
-            throw new ForbiddenException("한 달간 "+ count + "개 이상의 건의를 넣을 수 없습니다");
+            throw DoNotPostException.EXCEPTION;
         }
         Posting posting = Posting.builder()
                 .title(dto.getTitle())
@@ -85,9 +83,9 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void modifyPost(User user, ModifyPostDto dto) {
         Posting posting = postingRepository.findById(dto.getPostingId())
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!(posting.getUser().equals(user))) {
-            throw new UnauthorizedException("다른 사람의 게시물은 수정할 수 없습니다");
+            throw NotCtrlPostException.EXCEPTION;
         }
         posting.updatePosting(dto.getTitle(), dto.getText(), posting.getStatus(), LocalDate.now());
         postingRepository.save(posting);
@@ -97,9 +95,9 @@ public class PostingServiceImpl implements PostingService{
     @Transactional
     public void deletePost(User user, Long id) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!(posting.getUser().equals(user)) && !(user.getRole().equals(UserRole.ADMIN))) {
-            throw new UnauthorizedException("다른 사람의 게시물은 삭제할 수 없습니다");
+            throw NotCtrlPostException.EXCEPTION;
         }
         postingRepository.delete(posting);
     }
@@ -107,7 +105,7 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void soledPost(Long id) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.SOLVED, null);
         postingRepository.save(posting);
     }
@@ -115,7 +113,7 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void refusePost(Long id) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.REFUSED,null);
         postingRepository.save(posting);
     }
@@ -123,7 +121,7 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void signSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
                 .orElseGet(() -> PostingSympathy.builder()
                         .posting(posting)
@@ -136,9 +134,9 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void cancelSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
-                .orElseThrow(() -> new NotFoundException("공감 표시를 하지 않았습니다"));
+                .orElseThrow(() -> PostingSympathyNotFoundException.EXCEPTION);
         postingSympathy.updateStatus(PostingSympathyStatus.NO);
         postingSympathyRepository.save(postingSympathy);
     }
@@ -146,14 +144,14 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public List<PostingComment> getPostingComment(Long id) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         return postingCommentRepository.findByPosting(posting);
     }
 
     @Override
     public void createComment(User user, Long id, CreateCommentDto dto) {
         Posting posting = postingRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 게시물은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         PostingComment comment = PostingComment.builder()
                 .user(user)
                 .posting(posting)
@@ -165,9 +163,9 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void modifyComment(User user, Long id, ModifyCommentDto dto) {
         PostingComment postingComment = postingCommentRepository.findById(id)
-                        .orElseThrow(() -> new NotFoundException("해당 댓글은 존재하지 않습니다"));
+                        .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!user.equals(postingComment.getUser())) {
-            throw new ForbiddenException("다른 사람은 수정할 수 없습니다");
+            throw NotCtrlPostException.EXCEPTION;
         }
         postingComment.modifyComment(dto.getComment());
         postingCommentRepository.save(postingComment);
@@ -176,9 +174,9 @@ public class PostingServiceImpl implements PostingService{
     @Override
     public void deleteComment(User user, Long id) {
         PostingComment postingComment = postingCommentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 댓글은 존재하지 않습니다"));
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!user.equals(postingComment.getUser())) {
-            throw new ForbiddenException("다른 사람은 삭제할 수 없습니다");
+            throw NotCtrlPostException.EXCEPTION;
         }
         postingCommentRepository.delete(postingComment);
     }
