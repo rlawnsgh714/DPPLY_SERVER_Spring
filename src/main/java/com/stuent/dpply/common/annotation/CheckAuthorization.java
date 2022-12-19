@@ -1,7 +1,7 @@
 package com.stuent.dpply.common.annotation;
 
 
-import com.stuent.dpply.api.auth.domain.enums.UserRole;
+import com.stuent.dpply.common.enums.UserRole;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
