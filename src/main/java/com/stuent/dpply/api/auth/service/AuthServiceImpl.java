@@ -6,12 +6,12 @@ import com.stuent.dpply.api.auth.domain.enums.UserRole;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.auth.domain.ro.DauthServerDto;
 import com.stuent.dpply.api.auth.domain.ro.LoginRo;
+import com.stuent.dpply.api.auth.exception.DAuthCodeNotFoundException;
+import com.stuent.dpply.api.auth.exception.UserNotFoundException;
 import com.stuent.dpply.api.token.domain.enums.JWT;
 import com.stuent.dpply.api.token.service.TokenService;
 import com.stuent.dpply.common.config.properties.AppProperties;
 import com.stuent.dpply.common.config.restemplate.RestTemplateConfig;
-import com.stuent.dpply.common.exception.ForbiddenException;
-import com.stuent.dpply.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService{
     public LoginRo dodamLogin(DodamLoginDto dto) {
         DauthServerDto dauthToken = getDauthToken(dto.getCode());
         if(dauthToken.getAccess_token() == null) {
-            throw new ForbiddenException("변조된 code입니다");
+            throw DAuthCodeNotFoundException.EXCEPTION;
         }
         DodamOpenApiDto.DodamInfoData info = getDodamInfo(dauthToken.getAccess_token()).getData();
         User user = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService{
     @Override
     public User getUserById(String id) {
         return authRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("해당 아이디를 가진 유저는 존재하지 않습니다"));
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
     private DauthServerDto getDauthToken(String code) {
