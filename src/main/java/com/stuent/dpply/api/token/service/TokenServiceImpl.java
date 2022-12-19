@@ -4,11 +4,10 @@ import com.stuent.dpply.api.auth.domain.entity.User;
 import com.stuent.dpply.api.auth.domain.repository.AuthRepository;
 import com.stuent.dpply.api.token.domain.dto.RemakeRefreshTokenDto;
 import com.stuent.dpply.api.token.domain.enums.JWT;
+import com.stuent.dpply.api.token.exception.TokenExpiredException;
+import com.stuent.dpply.api.token.exception.TokenNotFoundException;
+import com.stuent.dpply.api.token.exception.TokenServerException;
 import com.stuent.dpply.common.config.properties.AppProperties;
-import com.stuent.dpply.common.exception.BadRequestException;
-import com.stuent.dpply.common.exception.GoneException;
-import com.stuent.dpply.common.exception.InternalServerException;
-import com.stuent.dpply.common.exception.NotFoundException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -68,11 +67,11 @@ public class TokenServiceImpl implements TokenService{
                     .parseClaimsJws(token)
                     .getBody();
         } catch (ExpiredJwtException e) {
-            throw new GoneException("토큰이 만료되었습니다");
+            throw TokenExpiredException.EXCEPTION;
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("토큰이 없습니다");
+            throw TokenNotFoundException.EXCEPTION;
         } catch (Exception e) {
-            throw new InternalServerException("토큰 해석 중 에러 발생");
+            throw TokenServerException.EXCEPTION;
         }
     }
 
@@ -86,7 +85,7 @@ public class TokenServiceImpl implements TokenService{
     @Override
     public String remakeAccessToken(RemakeRefreshTokenDto refreshToken) {
         if (refreshToken == null || refreshToken.getRefreshToken().trim().isEmpty()) {
-            throw new BadRequestException("토큰이 전송되지 않았습니다");
+            throw TokenNotFoundException.EXCEPTION;
         }
 
         Claims claims = this.parseToken(refreshToken.getRefreshToken(), JWT.REFRESH);
