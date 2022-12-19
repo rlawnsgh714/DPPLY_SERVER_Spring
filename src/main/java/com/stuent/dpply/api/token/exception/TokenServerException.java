@@ -11,4 +11,3 @@ public class TokenServerException extends CustomException {
 
     public static final CustomException EXCEPTION = new TokenServerException();
 }
-

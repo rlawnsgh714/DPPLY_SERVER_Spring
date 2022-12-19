@@ -1,6 +1,6 @@
 package com.stuent.dpply.common.config.restemplate;
 
-import com.stuent.dpply.common.exception.InternalServerException;
+import com.stuent.dpply.common.exception.error.InternalServerException;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
@@ -23,7 +23,7 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
     public void handleError(ClientHttpResponse response) throws IOException {
         final String error = getErrorAsString(response);
 
-        throw new InternalServerException("서버 통신중 오류 발생");
+        throw InternalServerException.EXCEPTION;
     }
 
     private String getErrorAsString(@NonNull final ClientHttpResponse response) throws IOException {
