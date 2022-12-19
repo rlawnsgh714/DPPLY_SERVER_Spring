@@ -3,8 +3,8 @@ package com.stuent.dpply.api.upload.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.stuent.dpply.api.upload.exception.UploadServerException;
 import com.stuent.dpply.common.config.properties.S3Properties;
-import com.stuent.dpply.common.exception.InternalServerException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class UploadServiceImpl implements UploadService{
             e.printStackTrace();
             log.error(e.getMessage());
         }
-        throw new InternalServerException("파일 업로드 서버 실패"); //FileUploadException
+        throw UploadServerException.EXCEPTION; //FileUploadException
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {

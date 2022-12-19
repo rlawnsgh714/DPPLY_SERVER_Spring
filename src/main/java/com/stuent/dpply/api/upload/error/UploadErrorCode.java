@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum UploadError implements ErrorProperty {
+public enum UploadErrorCode implements ErrorProperty {
 
     UPLOAD_ERROR(500, "서버 오류로 인한 업로드 실패")
     ;
