@@ -1,7 +1,7 @@
 package com.stuent.dpply.domain.token.service;
 
 import com.stuent.dpply.domain.auth.entity.User;
-import com.stuent.dpply.domain.auth.entity.repository.AuthRepository;
+import com.stuent.dpply.domain.auth.entity.repository.UserRepository;
 import com.stuent.dpply.domain.auth.exception.UserNotFoundException;
 import com.stuent.dpply.domain.token.presentation.dto.request.RemakeRefreshTokenRequest;
 import com.stuent.dpply.common.enums.JWT;
@@ -28,7 +28,7 @@ public class TokenServiceImpl implements TokenService{
     private final AppProperties appProperties;
     private final long JWT_ACCESS_EXPIRE = 60 * 60 * 1000;
     private final long JWT_REFRESH_EXPIRE = 60 * 60 * 1000 * 24 * 7;
-    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
 
     @Override
     public String generateToken(String uniqueId, JWT jwt) {
@@ -78,7 +78,7 @@ public class TokenServiceImpl implements TokenService{
 
     @Override
     public User verifyToken(String token) {
-        return authRepository.findById(
+        return userRepository.findById(
                 parseToken(token, JWT.ACCESS).get("userId").toString())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
@@ -90,7 +90,7 @@ public class TokenServiceImpl implements TokenService{
         }
 
         Claims claims = this.parseToken(refreshToken.getRefreshToken(), JWT.REFRESH);
-        User user = authRepository.getReferenceById(claims.get("userId").toString());
+        User user = userRepository.getReferenceById(claims.get("userId").toString());
 
         return generateToken(user.getUniqueId(), JWT.ACCESS);
     }

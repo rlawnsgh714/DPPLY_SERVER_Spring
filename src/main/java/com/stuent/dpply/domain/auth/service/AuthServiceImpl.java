@@ -2,7 +2,7 @@ package com.stuent.dpply.domain.auth.service;
 
 import com.stuent.dpply.domain.auth.entity.User;
 import com.stuent.dpply.common.enums.UserRole;
-import com.stuent.dpply.domain.auth.entity.repository.AuthRepository;
+import com.stuent.dpply.domain.auth.entity.repository.UserRepository;
 import com.stuent.dpply.domain.auth.presentation.dto.response.DauthServerResponse;
 import com.stuent.dpply.domain.auth.presentation.dto.response.LoginResponse;
 import com.stuent.dpply.domain.auth.exception.DAuthCodeNotFoundException;
@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService{
 
     private final RestTemplateConfig restTemplateConfig;
     private final AppProperties appProperties;
-    private final AuthRepository authRepository;
+    private final UserRepository userRepository;
     private final TokenService tokenService;
 
     @Override
@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService{
             throw DAuthCodeNotFoundException.EXCEPTION;
         }
         DodamOpenApiResponse.DodamInfoData info = getDodamInfo(dauthToken.getAccess_token()).getData();
-        User user = authRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
+        User user = userRepository.findById(info.getUniqueId()).orElseGet(() -> User.builder()
                 .uniqueId(info.getUniqueId())
                 .grade(info.getGrade())
                 .room(info.getRoom())
@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService{
                 .profileImage(info.getProfileImage())
                 .role(UserRole.valueOfNumber(info.getAccessLevel()))
                 .build());
-        User savedUser = authRepository.save(user);
+        User savedUser = userRepository.save(user);
         String token = tokenService.generateToken(user.getUniqueId(), JWT.ACCESS);
         String refreshToken = tokenService.generateToken(user.getUniqueId(), JWT.REFRESH);
         return new LoginResponse(savedUser, token, refreshToken);
@@ -58,12 +58,12 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public List<User> getUsers() {
-        return authRepository.findAll();
+        return userRepository.findAll();
     }
 
     @Override
     public User getUserById(String id) {
-        return authRepository.findById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
