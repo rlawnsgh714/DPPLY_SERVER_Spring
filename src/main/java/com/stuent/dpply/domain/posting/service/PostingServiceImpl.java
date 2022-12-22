@@ -39,8 +39,10 @@ public class PostingServiceImpl implements PostingService{
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
         if(sort.equals(SortMethod.RECENT)) {
             return postingRepository.findByStatusOrderByCreateAt(status);
-        }else {
+        }else if (sort.equals(SortMethod.SYMPATHY)) {
             return postingRepository.findByStatusOrderBySympathyCount(status);
+        } else {
+            throw MethodNotFoundException.EXCEPTION;
         }
     }
 
