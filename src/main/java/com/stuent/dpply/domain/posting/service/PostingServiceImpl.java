@@ -53,6 +53,11 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
+    public List<Posting> getMyPost(User user) {
+        return postingRepository.findByUser(user);
+    }
+
+    @Override
     public List<Posting> getPostByTag(PostingTag tag) {
         return postingRepository.findByTag(tag);
     }

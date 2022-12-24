@@ -55,6 +55,18 @@ public class PostingController {
         );
     }
 
+    @GetMapping("/my")
+    public ResponseData<List<Posting>> getMyPost(
+            @RequestAttribute User user
+    ) {
+        List<Posting> postingList = postingService.getMyPost(user);
+        return new ResponseData<>(
+                HttpStatus.OK,
+                "내 게시물 가져오기 성공",
+                postingList
+        );
+    }
+
     @GetMapping("/tag")
     public ResponseData<List<Posting>> getPostByTag(
             @RequestParam("tag")PostingTag tag

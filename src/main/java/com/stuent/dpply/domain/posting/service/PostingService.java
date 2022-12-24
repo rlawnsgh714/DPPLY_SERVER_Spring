@@ -19,6 +19,8 @@ public interface PostingService {
 
     List<Posting> getPostByPageAndLimit(int page, int limit);
 
+    List<Posting> getMyPost(User user);
+
     List<Posting> getPostByTag(PostingTag tag);
 
     Posting getPostById(Long id);
