@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum GlobalErrorCode implements ErrorProperty {
 
 
-    INTERNAL_SERVER(500,"서버 에러")
+    INTERNAL_SERVER(500,"서버 에러"),
+    TOKEN_EXPIRED(400, "토큰 만료")
     ;
 
     private final int status;

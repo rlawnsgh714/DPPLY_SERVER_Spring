@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface PostingRepository extends JpaRepository<Posting, Long> {
 
-    List<Posting> findByUser(User user);
+    List<Posting> findByUserAndStatus(User user, PostingStatus status);
 
     List<Posting> findByStatusOrderByCreateAt(PostingStatus status);
 

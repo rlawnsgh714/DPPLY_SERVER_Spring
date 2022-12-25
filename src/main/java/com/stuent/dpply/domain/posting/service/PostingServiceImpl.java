@@ -37,13 +37,12 @@ public class PostingServiceImpl implements PostingService{
 
     @Override
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
-        if(sort.equals(SortMethod.RECENT)) {
-            return postingRepository.findByStatusOrderByCreateAt(status);
-        }else if (sort.equals(SortMethod.SYMPATHY)) {
-            return postingRepository.findByStatusOrderBySympathyCount(status);
-        } else {
-            throw MethodNotFoundException.EXCEPTION;
+        if (sort != null) {
+            if (sort.equals(SortMethod.SYMPATHY)) {
+                return postingRepository.findByStatusOrderBySympathyCount(status);
+            }
         }
+        return postingRepository.findByStatusOrderByCreateAt(status);
     }
 
     @Override
@@ -53,8 +52,8 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public List<Posting> getMyPost(User user) {
-        return postingRepository.findByUser(user);
+    public List<Posting> getMyPost(User user, PostingStatus status) {
+        return postingRepository.findByUserAndStatus(user, status);
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface PostingService {
 
     List<Posting> getPostByPageAndLimit(int page, int limit);
 
-    List<Posting> getMyPost(User user);
+    List<Posting> getMyPost(User user, PostingStatus status);
 
     List<Posting> getPostByTag(PostingTag tag);
 

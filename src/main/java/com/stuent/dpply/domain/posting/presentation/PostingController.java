@@ -32,7 +32,7 @@ public class PostingController {
     @GetMapping
     public ResponseData<List<Posting>> getPostByStatus(
             @RequestParam(name = "type") PostingStatus status,
-            @RequestParam(name = "sort") SortMethod sort
+            @RequestParam(name = "sort", required = false) SortMethod sort
     ) {
         List<Posting> postingList = postingService.getPostByStatusAndSort(status, sort);
         return new ResponseData<>(
@@ -55,11 +55,13 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @GetMapping("/my")
     public ResponseData<List<Posting>> getMyPost(
-            @RequestAttribute User user
+            @RequestAttribute User user,
+            @RequestParam("type") PostingStatus status
     ) {
-        List<Posting> postingList = postingService.getMyPost(user);
+        List<Posting> postingList = postingService.getMyPost(user, status);
         return new ResponseData<>(
                 HttpStatus.OK,
                 "내 게시물 가져오기 성공",

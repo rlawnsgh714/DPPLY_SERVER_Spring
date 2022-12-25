@@ -1,5 +1,6 @@
 package com.stuent.dpply.common.interceptor;
 
+import com.stuent.dpply.common.exception.error.TokenExpiredException;
 import com.stuent.dpply.domain.auth.entity.User;
 import com.stuent.dpply.domain.token.service.TokenService;
 import com.stuent.dpply.common.annotation.CheckAuthorization;
@@ -34,13 +35,14 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String token = authExtractor.extract(request, "Bearer");
+        log.info("{}",token);
         if (token == null || token.length() == 0) {
             return true;
         }
 
         User user = tokenService.verifyToken(token);
         if (user == null) {
-            throw new IllegalArgumentException("유효하지 않은 토큰");
+            throw TokenExpiredException.EXCEPTION;
         }
 
         request.setAttribute("user", user);
