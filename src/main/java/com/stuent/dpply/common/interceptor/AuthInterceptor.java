@@ -35,7 +35,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String token = authExtractor.extract(request, "Bearer");
-        log.info("{}",token);
         if (token == null || token.length() == 0) {
             return true;
         }
