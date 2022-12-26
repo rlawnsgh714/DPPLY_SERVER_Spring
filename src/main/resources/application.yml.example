@@ -1,0 +1,42 @@
+server:
+    port: number
+
+spring:
+    mvc:
+        pathmatch:
+            matching-strategy: string
+    jpa:
+        hibernate:
+            ddl-auto: string
+        properties:
+            hibernate:
+            show_sql: boolean
+            format_sql: boolean
+
+    datasource:
+        url: string
+        username: string
+        password: string
+        driver-class-name: string
+
+app:
+    DAUTH_SERVER: string
+    OPEN_API_SERVER: string
+    CLIENT_ID: string
+    CLIENT_SECRET: string
+    ACCESS_SECRET: string
+    REFRESH_SECRET: string
+    REDIRECT_URL: string
+
+cloud:
+    aws:
+        credentials:
+            access-key: string
+            secret-key: string
+        stack:
+            auto: boolean
+        region:
+            static: string
+        s3:
+            endpoint: string
+            bucket: string
