@@ -7,7 +7,7 @@ plugins {
 
 group = 'com.stuent.requirement'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = "11`"
 
 configurations {
     compileOnly {
@@ -43,3 +43,4 @@ tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder:tiny'
     environment = ['BP_NATIVE_IMAGE': 'true']
 }
+targetCompatibility = JavaVersion.VERSION_16
