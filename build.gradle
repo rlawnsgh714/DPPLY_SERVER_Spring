@@ -29,6 +29,7 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compileOnly 'com.google.code.findbugs:jsr305'
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
