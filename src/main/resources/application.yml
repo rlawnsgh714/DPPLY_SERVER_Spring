@@ -14,9 +14,9 @@ spring:
             format_sql: true
 
     datasource:
-        url: jdbc:mysql://101.101.209.184:33306/requirement?serverTimezone=UTC&characterEncoding=UTF-8
+        url: jdbc:mysql://localhost:3306/requirement?serverTimezone=UTC&characterEncoding=UTF-8
         username: root
-        password: b1nd0108!
+        password: 123456789
         driver-class-name: com.mysql.cj.jdbc.Driver
 
 app:
