@@ -58,11 +58,12 @@ public class Posting {
     }
 
     @Builder
-    public Posting(String title, String text, User user, PostingTag tag){
+    public Posting(String title, String text, User user, PostingTag tag, String imageUrl){
         this.title = title;
         this.text = text;
         this.user = user;
         this.tag = tag;
+        this.imageUrl = imageUrl;
         this.sympathyCount = 0;
         this.status = PostingStatus.WAITING;
         this.createAt = LocalDate.now();

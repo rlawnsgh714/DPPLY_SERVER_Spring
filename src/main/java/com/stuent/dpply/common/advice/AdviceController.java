@@ -14,9 +14,9 @@ public class AdviceController {
     @ExceptionHandler({CustomException.class})
     protected ResponseEntity<ResponseError> CustomException(CustomException customException){
         final ResponseError responseError = ResponseError.builder()
-                .status(HttpStatus.BAD_REQUEST)
-                .message(customException.getMessage())
+                .status(HttpStatus.valueOf(customException.getErrorProperty().getStatus()))
+                .message(customException.getErrorProperty().getMessage())
                 .build();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+        return ResponseEntity.status(HttpStatus.valueOf(customException.getErrorProperty().getStatus())).body(responseError);
     }
 }
