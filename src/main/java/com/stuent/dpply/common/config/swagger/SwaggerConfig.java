@@ -16,7 +16,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableAsync
 @EnableWebMvc
 @EnableSwagger2
 public class SwaggerConfig implements WebMvcConfigurer {
@@ -32,7 +31,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html")
+        registry.addResourceHandler("swagger-ui")
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
@@ -44,7 +43,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build().apiInfo(apiInfo());
+                .build().apiInfo(apiInfo())
+                .pathMapping("/");
     }
 
     private ApiInfo apiInfo() {
