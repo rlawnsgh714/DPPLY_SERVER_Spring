@@ -1,5 +1,6 @@
 package com.stuent.dpply.domain.posting.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.stuent.dpply.domain.auth.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class PostingComment {
     private String comment;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createAt;
 
     public void modifyComment(String comment) {

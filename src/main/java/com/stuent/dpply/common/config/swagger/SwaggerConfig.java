@@ -29,14 +29,6 @@ public class SwaggerConfig implements WebMvcConfigurer {
         return new InternalResourceViewResolver();
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui")
-                .addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-
     @Bean
     public Docket api(){
         return new Docket(DocumentationType.SWAGGER_2)
