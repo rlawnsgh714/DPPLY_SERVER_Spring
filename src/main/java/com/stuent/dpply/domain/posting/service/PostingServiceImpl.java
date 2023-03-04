@@ -52,8 +52,16 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public List<Posting> getMyPost(User user, PostingStatus status) {
-        return postingRepository.findByUserAndStatus(user, status);
+    public List<Posting> getMyPost(User user, PostingStatus status, PostingTag tag) {
+        if (status != null && tag != null) {
+            return postingRepository.findByUserAndStatusAndTag(user, status, tag);
+        } else if (tag != null) {
+            return postingRepository.findByUserAndTag(user, tag);
+        } else if (status != null) {
+            return postingRepository.findByUserAndStatus(user, status);
+        } else {
+            return postingRepository.findByUser(user);
+        }
     }
 
     @Override

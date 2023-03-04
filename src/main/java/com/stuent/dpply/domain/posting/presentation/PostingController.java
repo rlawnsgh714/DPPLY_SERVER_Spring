@@ -59,9 +59,10 @@ public class PostingController {
     @GetMapping("/my")
     public ResponseData<List<Posting>> getMyPost(
             @RequestAttribute User user,
-            @RequestParam("type") PostingStatus status
+            @RequestParam(value = "type", required = false) PostingStatus status,
+            @RequestParam(value = "tag", required = false) PostingTag tag
     ) {
-        List<Posting> postingList = postingService.getMyPost(user, status);
+        List<Posting> postingList = postingService.getMyPost(user, status, tag);
         return new ResponseData<>(
                 HttpStatus.OK,
                 "내 게시물 가져오기 성공",
@@ -71,12 +72,13 @@ public class PostingController {
 
     @GetMapping("/tag")
     public ResponseData<List<Posting>> getPostByTag(
-            @RequestParam("tag")PostingTag tag
+            @RequestParam("tag") PostingTag tag
     ) {
+        List<Posting>  postingList = postingService.getPostByTag(tag);
         return new ResponseData<>(
                 HttpStatus.OK,
-                "",
-                null
+                "태그별 게시물 가져오기 성공",
+                postingList
         );
     }
 
@@ -155,6 +157,7 @@ public class PostingController {
         );
     }
 
+    @CheckAuthorization
     @PostMapping("/sympathy/{id}")
     public Response signSympathy(
             @RequestAttribute User user,

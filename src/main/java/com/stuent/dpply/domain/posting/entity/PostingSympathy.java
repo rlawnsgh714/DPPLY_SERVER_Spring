@@ -1,5 +1,6 @@
 package com.stuent.dpply.domain.posting.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.stuent.dpply.domain.auth.entity.User;
 import com.stuent.dpply.common.enums.PostingSympathyStatus;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class PostingSympathy {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_posting_id")
+    @JsonBackReference
     private Posting posting;
 
     @OneToOne(fetch = FetchType.EAGER)

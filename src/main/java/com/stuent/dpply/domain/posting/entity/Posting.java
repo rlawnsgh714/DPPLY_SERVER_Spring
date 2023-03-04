@@ -1,6 +1,7 @@
 package com.stuent.dpply.domain.posting.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.stuent.dpply.domain.auth.entity.User;
 import com.stuent.dpply.common.enums.PostingStatus;
 import com.stuent.dpply.common.enums.PostingTag;
@@ -11,6 +12,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Entity(name = "posting")
@@ -49,6 +51,10 @@ public class Posting {
     private User user;
 
     private String imageUrl;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "posting")
+    @JsonManagedReference
+    private List<PostingSympathy> sympathyUser;
 
     public void updatePosting(String title, String text, PostingStatus status, LocalDate updateAt){
         this.title = title;

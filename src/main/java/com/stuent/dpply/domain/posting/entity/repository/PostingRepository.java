@@ -21,5 +21,11 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
 
     List<Posting> findByTag(PostingTag tag);
 
+    List<Posting> findByUserAndTag(User user, PostingTag tag);
+
+    List<Posting> findByUserAndStatusAndTag(User user, PostingStatus status, PostingTag tag);
+
+    List<Posting> findByUser(User user);
+
     int countByUserAndCreateAtBetween(User user, LocalDate createAt, LocalDate createAt2);
 }
