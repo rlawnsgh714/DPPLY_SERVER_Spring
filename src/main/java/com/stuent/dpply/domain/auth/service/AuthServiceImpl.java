@@ -50,6 +50,13 @@ public class AuthServiceImpl implements AuthService{
                 .profileImage(info.getProfileImage())
                 .role(UserRole.valueOfNumber(info.getAccessLevel()))
                 .build());
+        user.updateUserData(
+                info.getGrade(),
+                info.getRoom(),
+                info.getNumber(),
+                info.getName(),
+                info.getEmail(),
+                info.getProfileImage());
         User savedUser = userRepository.save(user);
         String token = tokenService.generateToken(user.getUniqueId(), JWT.ACCESS);
         String refreshToken = tokenService.generateToken(user.getUniqueId(), JWT.REFRESH);

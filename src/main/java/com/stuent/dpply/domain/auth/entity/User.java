@@ -37,4 +37,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRole role;
+
+    public void updateUserData(int grade, int room, int number, String name, String email, String profileImage) {
+        this.grade = grade;
+        this.room = room;
+        this.number = number;
+        this.name = name;
+        this.email = email;
+        this.profileImage = profileImage;
+    }
 }
