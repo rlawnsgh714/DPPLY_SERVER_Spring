@@ -48,7 +48,7 @@ public class AuthServiceImpl implements AuthService{
                 .name(info.getName())
                 .email(info.getEmail())
                 .profileImage(info.getProfileImage())
-                .role(UserRole.valueOfNumber(info.getAccessLevel()))
+                .role(info.getRole())
                 .build());
         user.updateUserData(
                 info.getGrade(),

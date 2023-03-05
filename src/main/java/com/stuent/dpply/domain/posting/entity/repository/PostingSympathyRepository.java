@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface PostingSympathyRepository extends JpaRepository<PostingSympathy, Long> {
 
     Optional<PostingSympathy> findByUserAndPosting(User user, Posting posting);
+    void deleteByPosting(Posting posting);
 }

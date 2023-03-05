@@ -110,10 +110,13 @@ public class PostingServiceImpl implements PostingService{
     public void deletePost(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        if(!(posting.getUser().equals(user)) && !(user.getRole().equals(UserRole.ADMIN))) {
-            throw NotCtrlPostException.EXCEPTION;
+        if(posting.getUser().getUniqueId().equals(user.getUniqueId()) || user.getRole().equals(UserRole.ADMIN)) {
+            postingCommentRepository.deleteByPosting(posting);
+            postingSympathyRepository.deleteByPosting(posting);
+            postingRepository.delete(posting);
+            return;
         }
-        postingRepository.delete(posting);
+        throw NotCtrlPostException.EXCEPTION;
     }
 
     @Override

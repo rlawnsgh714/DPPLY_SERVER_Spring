@@ -1,5 +1,6 @@
 package com.stuent.dpply.domain.auth.presentation.dto.response;
 
+import com.stuent.dpply.common.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class DodamOpenApiResponse {
     private final String name;
     private final String email;
     private final String profileImage;
-    private final int accessLevel;
+    private final UserRole role;
 
     public DodamInfoData(DodamInfoData data) {
       this.uniqueId = data.getUniqueId();
@@ -39,7 +40,7 @@ public class DodamOpenApiResponse {
       this.name = data.getName();
       this.email = data.getEmail();
       this.profileImage = data.getProfileImage();
-      this.accessLevel = data.getAccessLevel();
+      this.role = data.getRole();
     }
   }
 }

@@ -11,4 +11,5 @@ import java.util.List;
 public interface PostingCommentRepository extends JpaRepository<PostingComment, Long> {
 
     List<PostingComment> findByPosting(Posting posting);
+    void deleteByPosting(Posting posting);
 }
