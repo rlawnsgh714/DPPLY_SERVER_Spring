@@ -53,7 +53,7 @@ public class PostingServiceImpl implements PostingService{
         long postingCount = postingRepository.count(); //2
         long pageCount = 1;
         for (long i = 1; i < postingCount; i++) {
-            if (page * i * 10 > postingCount) {
+            if (i * 10 >= postingCount) {
                 pageCount = i;
                 break;
             }
