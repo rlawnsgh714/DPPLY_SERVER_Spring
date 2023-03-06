@@ -11,6 +11,7 @@ import com.stuent.dpply.domain.posting.entity.PostingComment;
 import com.stuent.dpply.common.enums.PostingTag;
 import com.stuent.dpply.common.enums.SortMethod;
 import com.stuent.dpply.common.enums.PostingStatus;
+import com.stuent.dpply.domain.posting.presentation.dto.response.PostingPaginationResponse;
 import com.stuent.dpply.domain.posting.service.PostingService;
 import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.response.Response;
@@ -43,11 +44,10 @@ public class PostingController {
     }
 
     @GetMapping("/page")
-    public ResponseData<List<Posting>> getPostBypage(
-            @RequestParam(name = "page") int page,
-            @RequestParam(name = "limit") int limit
+    public ResponseData<PostingPaginationResponse> getPostByPage(
+            @RequestParam(name = "page") int page
     ) {
-        List<Posting> postingList = postingService.getPostByPageAndLimit(page, limit);
+        PostingPaginationResponse postingList = postingService.getPostByPage(page);
         return new ResponseData<>(
                 HttpStatus.OK,
                 "대기중인 게시물 조회 성공",

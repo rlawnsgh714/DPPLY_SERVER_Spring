@@ -44,6 +44,7 @@ public class Posting {
     @Column(nullable = false)
     private PostingTag tag;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate updateAt;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -17,6 +17,5 @@ public class CreatePostRequest {
     private String text;
     @NotNull
     private PostingTag tag;
-    @NotEmpty
     private String imageUrl;
 }

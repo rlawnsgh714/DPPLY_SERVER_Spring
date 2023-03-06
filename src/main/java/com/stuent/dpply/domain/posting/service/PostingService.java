@@ -10,14 +10,14 @@ import com.stuent.dpply.domain.posting.entity.PostingComment;
 import com.stuent.dpply.common.enums.PostingTag;
 import com.stuent.dpply.common.enums.SortMethod;
 import com.stuent.dpply.common.enums.PostingStatus;
+import com.stuent.dpply.domain.posting.presentation.dto.response.PostingPaginationResponse;
 
 import java.util.List;
 
 public interface PostingService {
 
     List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort);
-
-    List<Posting> getPostByPageAndLimit(int page, int limit);
+    PostingPaginationResponse getPostByPage(int page);
 
     List<Posting> getMyPost(User user, PostingStatus status, PostingTag tag);
 

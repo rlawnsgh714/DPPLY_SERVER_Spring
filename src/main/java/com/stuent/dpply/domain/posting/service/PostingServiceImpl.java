@@ -18,6 +18,7 @@ import com.stuent.dpply.domain.posting.entity.repository.PostingCountRepository;
 import com.stuent.dpply.domain.posting.entity.repository.PostingRepository;
 import com.stuent.dpply.domain.posting.entity.repository.PostingSympathyRepository;
 import com.stuent.dpply.domain.posting.exception.*;
+import com.stuent.dpply.domain.posting.presentation.dto.response.PostingPaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,9 +48,17 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public List<Posting> getPostByPageAndLimit(int page, int limit) {
-        PageRequest pageRequest = PageRequest.of(page - 1, limit);
-        return postingRepository.findAll(pageRequest).getContent();
+    public PostingPaginationResponse getPostByPage(int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        long postingCount = postingRepository.count(); //2
+        long pageCount = 1;
+        for (long i = 1; i < postingCount; i++) {
+            if (page * i * 10 > postingCount) {
+                pageCount = i;
+                break;
+            }
+        }
+        return new PostingPaginationResponse(postingRepository.findAll(pageRequest).getContent(), pageCount);
     }
 
     @Override

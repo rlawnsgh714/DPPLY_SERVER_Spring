@@ -12,11 +12,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class AdviceController {
 
     @ExceptionHandler({CustomException.class})
-    protected ResponseEntity<ResponseError> CustomException(CustomException customException){
+    protected ResponseEntity<ResponseError> handleCustomException(CustomException customException) {
         final ResponseError responseError = ResponseError.builder()
                 .status(HttpStatus.valueOf(customException.getErrorProperty().getStatus()))
                 .message(customException.getErrorProperty().getMessage())
                 .build();
         return ResponseEntity.status(HttpStatus.valueOf(customException.getErrorProperty().getStatus())).body(responseError);
+    }
+
+    @ExceptionHandler({Exception.class})
+    protected ResponseEntity<ResponseError> handleException(Exception exception) {
+        final ResponseError responseError = ResponseError.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .message(exception.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseError);
     }
 }
