@@ -151,6 +151,7 @@ public class PostingServiceImpl implements PostingService{
     public void signSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        posting.updateSympathyCount(posting.getSympathyCount() + 1);
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
                 .orElseGet(() -> PostingSympathy.builder()
                         .posting(posting)
@@ -158,16 +159,19 @@ public class PostingServiceImpl implements PostingService{
                         .build());
         postingSympathy.updateStatus(PostingSympathyStatus.YES);
         postingSympathyRepository.save(postingSympathy);
+        postingRepository.save(posting);
     }
 
     @Override
     public void cancelSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        posting.updateSympathyCount(posting.getSympathyCount() - 1);
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
                 .orElseThrow(() -> PostingSympathyNotFoundException.EXCEPTION);
         postingSympathy.updateStatus(PostingSympathyStatus.NO);
         postingSympathyRepository.save(postingSympathy);
+        postingRepository.save(posting);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.stuent.dpply.common.enums.PostingTag;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -29,6 +30,7 @@ public class Posting {
     private String text;
 
     @Column(nullable = false)
+    @ColumnDefault("0")
     private int sympathyCount;
 
     @Enumerated(EnumType.STRING)
@@ -62,6 +64,10 @@ public class Posting {
         this.text = text;
         this.status = status;
         this.updateAt = updateAt;
+    }
+
+    public void updateSympathyCount(int sympathyCount) {
+        this.sympathyCount = sympathyCount;
     }
 
     @Builder
