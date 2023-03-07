@@ -21,6 +21,7 @@ import com.stuent.dpply.domain.posting.exception.*;
 import com.stuent.dpply.domain.posting.presentation.dto.response.PostingPaginationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +50,7 @@ public class PostingServiceImpl implements PostingService{
 
     @Override
     public PostingPaginationResponse getPostByPage(int page) {
-        PageRequest pageRequest = PageRequest.of(page - 1, 10);
+        Pageable pageRequest = PageRequest.of(page - 1, 10);
         long postingCount = postingRepository.count(); //2
         long pageCount = 1;
         for (long i = 1; i < postingCount; i++) {
@@ -58,7 +59,8 @@ public class PostingServiceImpl implements PostingService{
                 break;
             }
         }
-        return new PostingPaginationResponse(postingRepository.findAll(pageRequest).getContent(), pageCount);
+        return new PostingPaginationResponse(
+                postingRepository.findAllByStatus(PostingStatus.WAITING, pageRequest), pageCount);
     }
 
     @Override
@@ -133,7 +135,7 @@ public class PostingServiceImpl implements PostingService{
     public void soledPost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.SOLVED, null);
+        posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.SOLVED, LocalDate.now());
         postingRepository.save(posting);
     }
 
@@ -141,7 +143,7 @@ public class PostingServiceImpl implements PostingService{
     public void refusePost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.REFUSED,null);
+        posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.REFUSED,LocalDate.now());
         postingRepository.save(posting);
     }
 

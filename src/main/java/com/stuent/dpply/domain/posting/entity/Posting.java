@@ -57,7 +57,7 @@ public class Posting {
     @JsonManagedReference
     private List<PostingSympathy> sympathyUser;
 
-    public void updatePosting(String title, String text, PostingStatus status, LocalDate updateAt){
+    public void updatePosting(String title, String text, PostingStatus status, LocalDate updateAt) {
         this.title = title;
         this.text = text;
         this.status = status;
@@ -65,7 +65,7 @@ public class Posting {
     }
 
     @Builder
-    public Posting(String title, String text, User user, PostingTag tag, String imageUrl){
+    public Posting(String title, String text, User user, PostingTag tag, String imageUrl) {
         this.title = title;
         this.text = text;
         this.user = user;
