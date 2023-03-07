@@ -25,11 +25,11 @@ public class PostingComment {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
 
     @Column(nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createAt;
 
     public void modifyComment(String comment) {
