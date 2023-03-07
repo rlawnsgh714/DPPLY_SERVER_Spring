@@ -102,6 +102,7 @@ public class PostingServiceImpl implements PostingService{
                 .tag(dto.getTag())
                 .text(dto.getText())
                 .user(user)
+                .imageUrl(dto.getImageUrl())
                 .build();
         postingRepository.save(posting);
     }
@@ -166,7 +167,9 @@ public class PostingServiceImpl implements PostingService{
     public void cancelSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        posting.updateSympathyCount(posting.getSympathyCount() - 1);
+        if (posting.getSympathyCount() - 1 >= 0) {
+            posting.updateSympathyCount(posting.getSympathyCount() - 1);
+        }
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
                 .orElseThrow(() -> PostingSympathyNotFoundException.EXCEPTION);
         postingSympathy.updateStatus(PostingSympathyStatus.NO);

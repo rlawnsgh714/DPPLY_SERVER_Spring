@@ -62,6 +62,9 @@ public class TokenServiceImpl implements TokenService{
     }
 
     private Claims parseToken(String token, JWT jwt) {
+        if (token.isEmpty()) {
+            throw TokenNotFoundException.EXCEPTION;
+        }
         try {
             return Jwts.parser()
                     .setSigningKey(getJwtSecretByType(jwt))
