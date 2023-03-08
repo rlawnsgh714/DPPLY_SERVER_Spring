@@ -31,7 +31,7 @@ public interface PostingService {
 
     void deletePost(User user, Long id);
 
-    void soledPost(Long id);
+    void solvedPost(Long id);
 
     void refusePost(Long id);
 

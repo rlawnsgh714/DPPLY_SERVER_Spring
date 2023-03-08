@@ -138,7 +138,7 @@ public class PostingController {
     public Response solvePost(
             @PathVariable Long id
     ) {
-        postingService.soledPost(id);
+        postingService.solvedPost(id);
         return new Response(
                 HttpStatus.CREATED,
                 "게시물 해결 처리 성공"

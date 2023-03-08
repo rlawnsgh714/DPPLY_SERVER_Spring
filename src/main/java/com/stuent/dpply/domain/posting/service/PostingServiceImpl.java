@@ -133,7 +133,7 @@ public class PostingServiceImpl implements PostingService{
     }
 
     @Override
-    public void soledPost(Long id) {
+    public void solvedPost(Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         posting.updatePosting(posting.getTitle(), posting.getText(), PostingStatus.SOLVED, LocalDate.now());
