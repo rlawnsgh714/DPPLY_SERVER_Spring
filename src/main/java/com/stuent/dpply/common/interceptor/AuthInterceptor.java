@@ -1,7 +1,7 @@
 package com.stuent.dpply.common.interceptor;
 
-import com.stuent.dpply.common.exception.error.TokenExpiredException;
 import com.stuent.dpply.domain.auth.entity.User;
+import com.stuent.dpply.domain.token.exception.TokenExpiredException;
 import com.stuent.dpply.domain.token.service.TokenService;
 import com.stuent.dpply.common.annotation.CheckAuthorization;
 import com.stuent.dpply.common.extractor.AuthorizationExtractor;
