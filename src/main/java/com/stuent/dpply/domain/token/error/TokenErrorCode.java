@@ -11,7 +11,7 @@ public enum TokenErrorCode implements ErrorProperty {
 
 
     TOKEN_NOT_FOUND(400, "토큰이 없습니다"),
-    TOKEN_EXPIRED(410, "토큰 만료되었습니다"),
+    TOKEN_EXPIRED(401, "토큰 만료되었습니다"),
     TOKEN_SERVER_ERROR(500, "토큰 해석중 에러 발생")
     ;
 
