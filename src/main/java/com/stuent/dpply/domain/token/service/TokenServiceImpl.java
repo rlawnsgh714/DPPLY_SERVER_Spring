@@ -62,7 +62,7 @@ public class TokenServiceImpl implements TokenService{
     }
 
     private Claims parseToken(String token, JWT jwt) {
-        if (token.isEmpty()) {
+        if (token.isEmpty() || token.equals("undefined")) {
             throw TokenNotFoundException.EXCEPTION;
         }
         try {
