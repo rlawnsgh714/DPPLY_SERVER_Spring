@@ -1,5 +1,6 @@
 package com.stuent.dpply.domain.posting.entity.repository;
 
+import com.stuent.dpply.common.enums.PostingSympathyStatus;
 import com.stuent.dpply.domain.auth.entity.User;
 import com.stuent.dpply.domain.posting.entity.Posting;
 import com.stuent.dpply.domain.posting.entity.PostingSympathy;
@@ -12,5 +13,6 @@ import java.util.Optional;
 public interface PostingSympathyRepository extends JpaRepository<PostingSympathy, Long> {
 
     Optional<PostingSympathy> findByUserAndPosting(User user, Posting posting);
+    boolean existsByUserAndPostingAndStatus(User user, Posting posting, PostingSympathyStatus status);
     void deleteByPosting(Posting posting);
 }

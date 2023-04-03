@@ -10,6 +10,8 @@ import lombok.Getter;
 public enum PostingErrorCode implements ErrorProperty {
 
 
+    ALREADY_POSTING_SYMPATHY(403, "이미 공감 표시를 하고 있습니다"),
+    ALREADY_POSTING_NOT_SYMPATHY(403, "이미 공감 표시를 하고 있습니다"),
     NOT_CTRL_POST(403, "다른 사람의 게시물은 수정/삭제할 수 없습니다"),
     POST_NOT_FOUND(404, "해당 게시물이 존재하지 않습니다"),
     POST_COUNT_NOT_FOUND(404, "건의함 갯수으로 정한 데이터가 비었습니다"),

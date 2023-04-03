@@ -152,13 +152,16 @@ public class PostingServiceImpl implements PostingService{
     public void signSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        posting.updateSympathyCount(posting.getSympathyCount() + 1);
         PostingSympathy postingSympathy = postingSympathyRepository.findByUserAndPosting(user, posting)
                 .orElseGet(() -> PostingSympathy.builder()
                         .posting(posting)
                         .user(user)
                         .build());
         postingSympathy.updateStatus(PostingSympathyStatus.YES);
+        if (postingSympathyRepository.existsByUserAndPostingAndStatus(user, posting, PostingSympathyStatus.YES)) {
+            throw AlreadyPostingSympathyException.EXCEPTION;
+        }
+        posting.updateSympathyCount(posting.getSympathyCount() + 1);
         postingSympathyRepository.save(postingSympathy);
         postingRepository.save(posting);
     }
@@ -167,6 +170,9 @@ public class PostingServiceImpl implements PostingService{
     public void cancelSympathy(User user, Long id) {
         Posting posting = postingRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        if (postingSympathyRepository.existsByUserAndPostingAndStatus(user, posting, PostingSympathyStatus.NO)) {
+            throw AlreadyPostingNotSympathyException.EXCEPTION;
+        }
         if (posting.getSympathyCount() - 1 >= 0) {
             posting.updateSympathyCount(posting.getSympathyCount() - 1);
         }
