@@ -17,4 +17,5 @@ public class AppProperties {
     private String ACCESS_SECRET;
     private String REFRESH_SECRET;
     private String REDIRECT_URL;
+    private String NO_IMAGE_URL;
 }

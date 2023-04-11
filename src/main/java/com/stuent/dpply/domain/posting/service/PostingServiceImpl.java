@@ -1,5 +1,6 @@
 package com.stuent.dpply.domain.posting.service;
 
+import com.stuent.dpply.common.config.properties.AppProperties;
 import com.stuent.dpply.domain.auth.entity.User;
 import com.stuent.dpply.common.enums.UserRole;
 import com.stuent.dpply.domain.posting.presentation.dto.request.CreateCommentRequest;
@@ -27,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +37,7 @@ public class PostingServiceImpl implements PostingService{
     private final PostingSympathyRepository postingSympathyRepository;
     private final PostingCountRepository postingCountRepository;
     private final PostingCommentRepository postingCommentRepository;
+    private final AppProperties appProperties;
 
     @Override
     public List<Posting> getPostByStatusAndSort(PostingStatus status, SortMethod sort) {
@@ -97,12 +98,13 @@ public class PostingServiceImpl implements PostingService{
         if(postingCount >= count) {
             throw DoNotPostException.EXCEPTION;
         }
+        String image = dto.getImageUrl() == null ? appProperties.getNO_IMAGE_URL() : dto.getImageUrl();
         Posting posting = Posting.builder()
                 .title(dto.getTitle())
                 .tag(dto.getTag())
                 .text(dto.getText())
                 .user(user)
-                .imageUrl(dto.getImageUrl())
+                .imageUrl(image)
                 .build();
         postingRepository.save(posting);
     }
